@@ -1,0 +1,8 @@
+---
+title: Bookmarks
+layout: list.njk
+permalink: /{{title | lower}}/
+eleventyExcludeFromCollections: true
+---
+{% set posts = collections.bookmarks | reverse %}
+{% include "post-list.njk" %}

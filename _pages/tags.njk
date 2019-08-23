@@ -1,0 +1,13 @@
+---
+title: Tags
+layout: list.njk
+permalink: /{{title | lower}}/
+eleventyExcludeFromCollections: true
+---
+<div class="tags text-sm mt-4">
+  {% for tag, count in collections.tagList %}
+    <span class="inline-block bg-gray-200 rounded px-2 py-1 my-1 mr-1">
+      <a href="#{{ tag }}">{{ tag }}</a> ┋ {{ count }}
+    </span>
+  {% endfor %}
+</div>

@@ -1,0 +1,40 @@
+{% set pageTitle = title + ' - ' + site.name %}
+{% set pageDesc = '' %}
+{% set currentUrl = site.url + page.url %}
+
+{% if metaTitle %}
+  {% set pageTitle = metaTitle %}
+{% endif %}
+
+{% if metaDesc %}
+  {% set pageDesc = metaDesc %}
+{% endif %}
+
+<title>{{ pageTitle }}</title>
+<link rel="canonical" href="{{ currentUrl }}" />
+<link rel="author" href="{{ site.author.name }}">
+<link rel="publisher" href="{{ site.url }}">
+
+<!-- Open Graph meta -->
+<meta property="og:locale" content="en_GB" />
+<meta property="og:title" content="{{ pageTitle }}" />
+<meta property="og:url" content="{{ currentUrl }}" />
+<meta property="og:site_name" content="{{ site.name }}">
+
+{% if layout === 'post' %}
+  <meta property="og:type" content="article" />
+{% elif page.url === '/author/' %}
+  <meta property="og:type" content="profile" />
+{% else %}
+  <meta property="og:type" content="website" />
+{% endif %}
+
+{% if metaDesc %}
+  <meta name="description" content="{{ metaDesc }}" />
+  <meta property="og:description" content="{{ metaDesc }}" />
+{% endif %}
+
+{% if socialImage %}
+  <meta property="og:image" content="{{ socialImage }}" />
+  <meta property="og:image:alt" content="Page image for {{ site.name }}" />
+{% endif %}

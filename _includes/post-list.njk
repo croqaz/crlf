@@ -1,0 +1,13 @@
+<div class="flex my-2">
+  <ul class="posts-list flex-grow text-indigo-900 text-sm md:text-base">
+  {%- for post in posts %}
+    <li class="post-item py-2">
+        <a href="{{ post.url | url }}" class="flex justify-between">
+        {% if post.data.title %}{{ post.data.title }}{% else %}<code>{{ post.url }}</code>{% endif %}
+        <time class="post-day" datetime="{{ post.date | rssDate }}">
+          {{ post.date | fmtDate('yyyy LLL dd') }}</time>
+        </a>
+    </li>
+  {% endfor -%}
+  </ul>
+</div>

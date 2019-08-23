@@ -1,0 +1,42 @@
+{% set isList = layout === 'list.njk' %}
+
+<header class="bg-gray-300">
+  {% if isList %}
+  <section role="banner" class="flex content-center items-center" style="height:33vh">
+    <div class="flex-grow text-center has-special-font">
+      <h1 class="text-5xl text-gray-900" style="color:Indigo">{{ site.title }}</h1>
+      <h3 class="text-lg text-gray-600 mb-2">{{ site.shortDesc }}</h3>
+    </div>
+  </section>
+  {% endif %}
+
+<nav role="navigation" class="flex shadow-md items-center bg-gray-600 p-1 md:p-2">
+  <div class="w-full flex flex-grow items-center text-sm md:text-base w-auto">
+    <div class="flex-grow leading-none text-white">
+    {% if topic %}
+      <a href="/{{ topic }}/" class="inline-block rounded px-4 py-2 hover:text-indigo-500 hover:bg-gray-800">
+        {{ topic | title }}
+      </a>
+    {% else %}
+      <a href="/articles/" class="inline-block rounded px-4 py-2 hover:text-indigo-500 hover:bg-gray-800">
+        Articles
+      </a>
+      <a href="/notes/" class="inline-block rounded px-4 py-2 hover:text-indigo-500 hover:bg-gray-800">
+        Notes
+      </a>
+    {% endif %}
+
+      <a href="/topics/" title="Categories / Tags"
+        class="inline-block px-2 py-2 rounded border-l border-r font-medium text-orange-200
+          hover:text-indigo-500 hover:bg-gray-800">
+        &;&;
+      </a>
+      <a href="/about/" class="inline-block rounded px-4 py-2 hover:text-indigo-500 hover:bg-gray-800">
+        About
+      </a>
+    </div>
+    <a href="/feed.xml" class="rounded leading-none px-4 py-2 text-white hover:text-indigo-500 hover:bg-gray-800">
+      RSS</a>
+  </div>
+</nav>
+</header>

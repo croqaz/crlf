@@ -1,0 +1,49 @@
+---
+title: Post
+layout: base.njk
+---
+<article id="article" class="ml-auto mr-auto" style="width:64ch">
+
+  {% if title %}
+    <h1 class="text-gray-900 p-name">{{ title }}</h1>
+  {% endif %}
+  {% if excerpt %}
+    <h3 class="text-gray-600 p-summary">{{ excerpt }}</h3>
+  {% endif %}
+
+  <section class="text-gray-800 pt-2 entry-meta">
+    <span title="Created at">🗓</span>
+    <time class="dt-published" datetime="{{ page.date | rssDate }}">
+      {{ page.date | fmtDate('yyyy LLL dd, ccc') }}</time>
+  </section>
+
+  {% if topic === 'articles' %}
+  <section class="text-gray-800 pt-2" title="Reading time">
+    ⏱ {{ content | getReadingTime }} min
+  </section>
+  {% endif %}
+
+  <section class="e-content">
+    {{ content | safe }}
+  </section>
+
+  <section class="tags text-sm leading-loose py-2">
+    {% if tags.length > 1 %}
+    <span title="Tagged as">🏷</span>
+    {% for tag in tags %}
+      {% if tag == topic %}
+        <span class="bg-gray-200 rounded font-medium px-2 py-1 my-1 mr-1">@{{ tag }}</span>
+      {% else %}
+        <span class="bg-gray-200 rounded px-2 py-1 my-1 mr-1">#{{ tag }}</span>
+      {% endif %}
+    {% endfor %}
+    {% endif %}
+  </section>
+
+</article>
+
+{% if hasCode %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/zenburn.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+{% endif %}

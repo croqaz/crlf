@@ -1,0 +1,8 @@
+---
+title: Articles
+layout: list.njk
+permalink: /{{title | lower}}/
+eleventyExcludeFromCollections: true
+---
+{% set posts = collections.articles | reverse %}
+{% include "post-list.njk" %}
