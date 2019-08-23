@@ -96,6 +96,7 @@ typings/
 
 # 11ty build
 website/
+css/
 
 # images
 log/img/
