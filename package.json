@@ -1,0 +1,30 @@
+{
+  "name": "crlf",
+  "author": "Cristi Constantin",
+  "version": "0.1.0",
+  "description": "Cr;Lf; blog powered by Eleventy and TailwindCSS",
+  "scripts": {
+    "build": "npm run clean && npm run css-post && npm run css-csso && eleventy",
+    "clean": "rm -r website/",
+    "css-post": "postcss postcss/style.pcss --verbose -o css/styles.css",
+    "css-csso": "csso css/styles.css --stat --comments none --output css/styles.css",
+    "prestart": "npm run css-post",
+    "start": "eleventy --serve"
+  },
+  "keywords": [],
+  "license": "MIT",
+  "dependencies": {
+    "@11ty/eleventy": "0.8.x",
+    "@11ty/eleventy-plugin-rss": "1.x",
+    "@11ty/eleventy-plugin-syntaxhighlight": "2.x",
+    "@fullhuman/postcss-purgecss": "1.x",
+    "autoprefixer": "9.x",
+    "csso-cli": "2.x",
+    "html-minifier": "4.x",
+    "luxon": "1.x",
+    "markdown-it-task-lists": "2.x",
+    "postcss-cli": "6.x",
+    "postcss-nested": "4.x",
+    "tailwindcss": "1.1.x"
+  }
+}
