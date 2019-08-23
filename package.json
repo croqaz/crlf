@@ -3,8 +3,16 @@
   "author": "Cristi Constantin",
   "version": "0.1.0",
   "description": "Cr;Lf; blog powered by Eleventy and TailwindCSS",
+  "bugs": {
+    "url": "https://github.com/croqaz/crlf/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/croqaz/crlf.git"
+  },
   "scripts": {
     "build": "npm run clean && npm run css-post && npm run css-csso && eleventy",
+    "fmt": "npx prettier --write {.*,*}.js --print-width 100 --no-semi --single-quote --trailing-comma es5",
     "clean": "rm -r website/",
     "css-post": "postcss postcss/style.pcss --verbose -o css/styles.css",
     "css-csso": "csso css/styles.css --stat --comments none --output css/styles.css",
@@ -26,5 +34,8 @@
     "postcss-cli": "6.x",
     "postcss-nested": "4.x",
     "tailwindcss": "1.1.x"
+  },
+  "devDependencies": {
+    "prettier": "1.18.2"
   }
 }

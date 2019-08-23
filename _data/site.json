@@ -1,0 +1,31 @@
+{
+  "name": "Cr;Lf;",
+  "title": "&Cr; &Lf;",
+  "shortDesc": "a blog by Cristi Constantin",
+  "url": "https://crlf.site",
+  "topics": {
+    "notes": "📔",
+    "articles": "📄",
+    "bookmarks": "🔗",
+    "quotes": "❝",
+    "photos": "📷"
+  },
+  "feed": {
+    "filename": "feed.xml",
+    "path": "/feed.xml",
+    "url": "https://crlf.site/feed.xml"
+  },
+  "copyright": {
+    "from": "2007-2019",
+    "name": "Cristi Constantin"
+  },
+  "author": {
+    "name": "Cristi Constantin",
+    "social": {
+      "github.com/croqaz": "https://github.com/croqaz",
+      "gitlab.com/croqaz": "https://gitlab.com/croqaz",
+      "keybase.io/croqaz": "https://keybase.io/croqaz",
+      "twitter.com/croqaz": "https://twitter.com/croqaz"
+    }
+  }
+}

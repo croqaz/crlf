@@ -8,7 +8,7 @@ const purgecss = require('@fullhuman/postcss-purgecss')({
     './log/articles/*.md',
   ],
   whitelist: ['hr', 'blockquote', 'pre', 'code'],
-  defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || []
+  defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || [],
 })
 
 module.exports = {
@@ -18,5 +18,5 @@ module.exports = {
     require('autoprefixer'),
     process.env.NODE_ENV === 'production' && purgecss,
     // ...
-  ]
+  ],
 }

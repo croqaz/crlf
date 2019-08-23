@@ -3,11 +3,11 @@ const { colors } = require('tailwindcss/defaultTheme')
 module.exports = {
   theme: {
     screens: {
-      'sm': '640px',
+      sm: '640px',
       // => @media (min-width: 640px) { ... }
-      'md': '768px',
+      md: '768px',
       // => @media (min-width: 768px) { ... }
-      'lg': '1024px',
+      lg: '1024px',
       // => @media (min-width: 1024px) { ... }
     },
     colors: {
@@ -19,12 +19,12 @@ module.exports = {
       orange: colors.orange,
       blue: colors.blue,
       indigo: colors.indigo,
-    }
+    },
   },
   variants: {},
   corePlugins: {
     cursor: false,
     float: false,
     zIndex: false,
-  }
+  },
 }

@@ -1,0 +1,121 @@
+@font-face {
+    font-family: 'Inter var';
+    font-weight: 100 900;
+    font-display: swap;
+    font-style: normal;
+    font-named-instance: 'Regular';
+    src: url("/fonts/Inter/Inter-upright-var.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: 'Inter var';
+    font-weight: 100 900;
+    font-display: swap;
+    font-style: italic;
+    font-named-instance: 'Italic';
+    src: url("/fonts/Inter/Inter-italic-var.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: 'Triunfo';
+    font-style: normal;
+    font-weight: 400;
+    src: url("/fonts/Triunfo/Triunfo-Regular-Cond.otf") format("opentype");
+}
+
+@tailwind base;
+@tailwind components;
+
+html,
+body {
+    height: 99.9%;
+}
+
+.has-special-font {
+    font-family: Triunfo, system-ui, sans-serif;
+}
+
+ul {
+    list-style-type: disc;
+    @apply my-2;
+}
+
+ul.posts-list li.post-item {
+    @apply border-b border-dashed border-blue-900;
+}
+
+blockquote {
+    /* Gray 600 */
+    border-left: 0.5rem solid #718096;
+    @apply pl-3;
+}
+
+code {
+    /* Orange 200 and Gray 700 */
+    color: #FEEBC8;
+    background-color: #4A5568;
+    @apply px-1;
+}
+
+#footer {
+    a {
+        border-bottom: 1px dotted Indigo;
+    }
+}
+
+#article {
+    a {
+        /* text-indigo-900 */
+        color: #3C366B;
+        border-bottom: 1px dotted Indigo;
+    }
+
+    p {
+        @apply my-3;
+    }
+
+    h1 {
+        font-size: 30px;
+        letter-spacing: -0.021em;
+        line-height: 42px;
+        margin-bottom: 24px;
+        padding-top: 6px;
+    }
+
+    &:first-child h1 {
+        @apply my-0;
+    }
+
+    h2 {
+        font-size: 24px;
+        letter-spacing: -0.019em;
+        line-height: 34px;
+        margin-bottom: 12px;
+        padding-top: 24px;
+    }
+
+    h3 {
+        font-size: 20px;
+        letter-spacing: -0.017em;
+        line-height: 28px;
+        margin-bottom: 6px;
+        padding-top: 12px;
+    }
+
+    h4 {
+        font-size: 18px;
+        letter-spacing: -0.014em;
+        line-height: 25px;
+        padding-top: 10px;
+        margin-bottom: 10px;
+    }
+}
+
+@tailwind utilities;
+
+body {
+    font-family: "Inter var", system-ui, sans-serif !important;
+    font-kerning: normal;
+    font-feature-settings: "kern", "liga", "calt", "ss02", "cv08";
+    font-variant-ligatures: contextual common-ligatures;
+}
