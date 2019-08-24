@@ -1,16 +1,16 @@
 {% set isList = layout === 'list.njk' %}
 
-<header class="bg-gray-300">
+<header class="{{ theme.header_bg }}">
   {% if isList %}
   <section role="banner" class="flex content-center items-center" style="height:33vh">
     <div class="flex-grow text-center has-special-font">
       <h1 class="text-5xl text-gray-900" style="color:Indigo">{{ site.title }}</h1>
-      <h3 class="text-lg text-gray-600 mb-2">{{ site.shortDesc }}</h3>
+      <h3 class="text-lg text-gray-600 my-2">{{ site.shortDesc }}</h3>
     </div>
   </section>
   {% endif %}
 
-<nav role="navigation" class="flex shadow-md items-center bg-gray-600 p-1 md:p-2">
+<nav role="navigation" class="flex shadow-md items-center {{ theme.navigation_bg }} p-1 md:p-2">
   <div class="w-full flex flex-grow items-center text-sm md:text-base w-auto">
     <div class="flex-grow leading-none text-white">
     {% if topic %}

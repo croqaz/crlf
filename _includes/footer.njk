@@ -1,11 +1,12 @@
-<footer id="footer" class="text-center bg-gray-200 p-3 md:p-5 w-full" role="contentinfo">
+<footer id="footer" class="{{ theme.footer_bg }} text-center p-3 md:p-5 w-full" role="contentinfo">
   <div class="h-card">
     <p class="text-sm md:text-base leading-relaxed text-gray-900">
-    &copy; {{ site.copyright.from }} <a rel="me" class="p-name u-url" href="/author/">{{ site.copyright.name }}</a>.
+      &copy; {{ site.copyright.from }}
+      <a rel="me" class="p-name u-url" href="/author/">{{ site.copyright.name }}</a>.
     </p>
     <p class="text-xs md:text-sm leading-tight text-gray-600">Except where otherwise noted, the text content on this site is licensed under
-    <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank"
-      title="Attribution-NonCommercial-ShareAlike 4.0 International License">CC BY NC SA 4.0</a>.
+    <a rel="license" href="{{ site.license.link }}" target="_blank" title="{{ site.license.title }}">
+      {{ site.license.name }}</a>.
     </p>
   </div>
 </footer>

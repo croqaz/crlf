@@ -9,7 +9,7 @@ title: Base
     {% include "meta.njk" %}
     <link href="/css/styles.css" rel="stylesheet">
   </head>
-  <body class="flex flex-col bg-gray-100">
+  <body class="flex flex-col {{ theme.body_bg }}">
     {% include "header.njk" %}
     <section class="flex mt-4 mb-6 px-6" style="flex:1 0 auto">
       {{ content | safe }}

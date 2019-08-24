@@ -19,6 +19,11 @@
     "from": "2007-2019",
     "name": "Cristi Constantin"
   },
+  "license": {
+    "name": "CC BY NC SA 4.0",
+    "link": "http://creativecommons.org/licenses/by-nc-sa/4.0/",
+    "title": "Attribution-NonCommercial-ShareAlike 4.0 International License"
+  },
   "author": {
     "name": "Cristi Constantin",
     "social": {
