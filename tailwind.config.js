@@ -11,7 +11,7 @@ module.exports = {
       // => @media (min-width: 1024px) { ... }
     },
     colors: {
-      // Ignoring yellow, green, teal, purple, pink
+      // Ignoring yellow, green, teal, pink
       black: colors.black,
       white: colors.white,
       gray: colors.gray,
@@ -19,6 +19,7 @@ module.exports = {
       orange: colors.orange,
       blue: colors.blue,
       indigo: colors.indigo,
+      purple: colors.purple,
     },
   },
   variants: {},

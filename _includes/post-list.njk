@@ -1,5 +1,5 @@
 <div class="flex my-2">
-  <ul class="posts-list flex-grow text-indigo-900 text-sm md:text-base">
+  <ul class="posts-list flex-grow {{ theme.posts_list_color }} text-sm md:text-base">
   {%- for post in posts %}
     <li class="post-item py-2">
         <a href="{{ post.url | url }}" class="flex justify-between">

@@ -2,10 +2,10 @@
 
 <header class="{{ theme.header_bg }}">
   {% if isList %}
-  <section role="banner" class="flex content-center items-center" style="height:33vh">
-    <div class="flex-grow text-center has-special-font">
-      <h1 class="text-5xl text-gray-900" style="color:Indigo">{{ site.title }}</h1>
-      <h3 class="text-lg text-gray-600 my-2">{{ site.shortDesc }}</h3>
+  <section role="banner" class="flex content-center items-center" style="min-height:33vh">
+    <div class="flex-grow text-center has-special-font pb-2">
+      <h1 class="text-5xl {{ theme.header_h1_color }}">{{ site.title }}</h1>
+      <h3 class="text-lg {{ theme.header_h3_color }}">{{ site.shortDesc }}</h3>
     </div>
   </section>
   {% endif %}
@@ -28,7 +28,7 @@
 
       <a href="/topics/" title="Categories / Tags"
         class="inline-block px-2 py-2 rounded border-l border-r font-medium text-orange-200
-          hover:text-indigo-500 hover:bg-gray-800">
+          hover:text-purple-500 hover:bg-gray-800">
         &;&;
       </a>
       <a href="/about/" class="inline-block rounded px-4 py-2 hover:text-indigo-500 hover:bg-gray-800">

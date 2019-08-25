@@ -36,8 +36,7 @@ body {
 }
 
 ul {
-    list-style-type: disc;
-    @apply my-2;
+    @apply list-disc my-2;
 }
 
 ul.posts-list li.post-item {
@@ -45,29 +44,23 @@ ul.posts-list li.post-item {
 }
 
 blockquote {
-    /* Gray 600 */
-    border-left: 0.5rem solid #718096;
-    @apply pl-3;
+    border-left: 0.5rem;
+    @apply border-solid border-gray-600 pl-3;
 }
 
 code {
-    /* Orange 200 and Gray 700 */
-    color: #FEEBC8;
-    background-color: #4A5568;
-    @apply px-1;
+    @apply text-orange-200 bg-gray-700 px-1;
 }
 
 #footer {
     a {
-        border-bottom: 1px dotted Indigo;
+        @apply border-b border-dotted border-purple-900;
     }
 }
 
 #article {
     a {
-        /* text-indigo-900 */
-        color: #3C366B;
-        border-bottom: 1px dotted Indigo;
+        @apply text-indigo-900 border-b border-dotted border-purple-900;
     }
 
     p {
