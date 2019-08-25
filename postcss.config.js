@@ -6,6 +6,7 @@ const purgecss = require('@fullhuman/postcss-purgecss')({
     './log/*.md',
     './log/notes/*.md',
     './log/articles/*.md',
+    './_data/theme.json',
   ],
   whitelist: ['hr', 'blockquote', 'pre', 'code'],
   defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || [],
