@@ -127,6 +127,7 @@ module.exports = function(config) {
   config.addPassthroughCopy('css')
   config.addPassthroughCopy('gpg')
   config.addPassthroughCopy('fonts')
+  config.addPassthroughCopy('logo')
   config.addPassthroughCopy('log/img')
 
   // Don't ignore the same files ignored in the git repo
