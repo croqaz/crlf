@@ -1,13 +1,20 @@
 ---
+pagination:
+  data: collections
+  size: 1
+  alias: tag
+  filter:
+    - all
+    - tagList
+  addAllPagesToCollections: true
+
 title: Tags
-layout: list.njk
-permalink: /{{title | lower}}/
+layout: base
+permalink: /tags/{{tag}}/
 eleventyExcludeFromCollections: true
 ---
-<div class="tags text-sm mt-4">
-  {% for tag, count in collections.tagList %}
-    <span class="inline-block bg-gray-200 rounded px-2 py-1 my-1 mr-1">
-      <a href="#{{ tag }}">{{ tag }}</a> ┋ {{ count }}
-    </span>
-  {% endfor %}
-</div>
+<main id="main" class="ml-auto mr-auto" style="width:{{ theme.main_width }}">
+  <h3 class="text-2xl mt-2">Tagged “{{ tag }}”</h3>
+  {% set posts = collections[ tag ] | reverse %}
+  {% include "post-list.njk" %}
+</main>

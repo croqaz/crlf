@@ -1,9 +1,10 @@
 {
   "body_bg": "bg-gray-100",
-  "header_bg": "bg-gray-300",
   "footer_bg": "bg-gray-200",
-  "navigation_bg": "bg-gray-600",
-  "posts_list_color": "text-indigo-900",
+  "header_bg": "bg-gray-300",
   "header_h1_color": "text-purple-900",
-  "header_h3_color": "text-gray-600"
+  "header_h3_color": "text-gray-600",
+  "main_width": "64ch",
+  "navigation_bg": "bg-gray-600",
+  "posts_list_color": "text-indigo-900"
 }

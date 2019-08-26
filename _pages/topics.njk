@@ -1,6 +1,6 @@
 ---
 title: Topics
-layout: list.njk
+layout: list
 permalink: /topics/
 ---
 <ul class="mt-4">
@@ -16,8 +16,8 @@ permalink: /topics/
 
 <div class="tags text-sm">
   {% for tag, count in collections.tagList %}
-    <span class="inline-block text-indigo-900 bg-gray-200 rounded px-2 py-1 my-1">
-      <a href="#{{ tag }}">{{ tag }}<sup class="ml-1 text-gray-600">{{ count }}</sup></a>
+    <span class="inline-block {{ theme.posts_list_color }} bg-gray-200 rounded px-2 py-1 my-1">
+      <a href="/tags/{{ tag }}">{{ tag }}<sup class="ml-1 text-gray-600">{{ count }}</sup></a>
     </span>
     &nbsp;
   {% endfor %}

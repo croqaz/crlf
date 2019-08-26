@@ -1,7 +1,7 @@
-{% set isList = layout === 'list.njk' %}
+{% set hasHeader = (page.url === '/' or page.url === '/about/' or page.url === '/author/') %}
 
 <header class="{{ theme.header_bg }}">
-  {% if isList %}
+  {% if hasHeader %}
   <section role="banner" class="flex content-center items-center" style="min-height:33vh">
     <div class="flex-grow text-center has-special-font pb-2">
       <h1 class="text-5xl {{ theme.header_h1_color }}">{{ site.title }}</h1>

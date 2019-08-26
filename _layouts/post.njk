@@ -1,8 +1,8 @@
 ---
 title: Post
-layout: base.njk
+layout: base
 ---
-<article id="article" class="ml-auto mr-auto" style="width:64ch">
+<article id="article" class="ml-auto mr-auto" style="width:{{ theme.main_width }}">
 
   {% if title %}
     <h1 class="text-gray-900 p-name">{{ title }}</h1>
@@ -28,16 +28,20 @@ layout: base.njk
   </section>
 
   <section class="tags text-sm leading-loose py-2">
-    {% if tags.length > 1 %}
+    {% if tags %}
     <span title="Tagged as">🏷</span>
+    {% endif %}
     {% for tag in tags %}
       {% if tag == topic %}
-        <span class="bg-gray-200 rounded font-medium px-2 py-1 my-1 mr-1">@{{ tag }}</span>
+        <span class="bg-gray-200 rounded font-medium px-2 py-1 my-1 mr-1">
+          <a href="/{{ tag }}">@{{ tag }}</a>
+        </span>
       {% else %}
-        <span class="bg-gray-200 rounded px-2 py-1 my-1 mr-1">#{{ tag }}</span>
+        <span class="bg-gray-200 rounded px-2 py-1 my-1 mr-1">
+          <a href="/tags/{{ tag }}">#{{ tag }}</a>
+        </span>
       {% endif %}
     {% endfor %}
-    {% endif %}
   </section>
 
 </article>

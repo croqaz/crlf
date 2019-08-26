@@ -1,9 +1,9 @@
 ---
 title: List
-layout: base.njk
+layout: base
 eleventyExcludeFromCollections: true
 ---
-<main id="main" class="ml-auto mr-auto" style="width:64ch">
-<h3 class="text-2xl mt-2">{{title}}</h3>
+<main id="main" class="ml-auto mr-auto" style="width:{{ theme.main_width }}">
+<h3 class="text-2xl mt-2">{{ title }}</h3>
 {{ content | safe }}
 </main>
