@@ -6,19 +6,21 @@ eleventyExcludeFromCollections: true
 <feed xmlns="http://www.w3.org/2005/Atom">
 
 	<title>{{ site.title }}</title>
-	<link href="{{ site.feed.path }}" rel="self"/>
-	<link href="{{ site.url }}"/>
-	<updated>{{ collections.articles | rssLastUpdatedDate }}</updated>
 	<id>{{ site.feed.url }}</id>
+	<link href="{{ site.feed.url }}" rel="self"/>
+	<updated>{{ collections.articles | rssLastUpdatedDate }}</updated>
 	<author>
 		<name>{{ site.author.name }}</name>
+		<uri>{{ site.author.url }}</uri>
 	</author>
 	{%- for post in collections.articles | reverse %}
 	{% set absolutePostUrl %}{{ post.url | url | absoluteUrl(site.url) }}{% endset %}
 	<entry>
 		<id>{{ absolutePostUrl }}</id>
 		<title>{{ post.data.title }}</title>
+		<category term="{{ post.data.topic }}"/>
 		<link href="{{ absolutePostUrl }}"/>
+		<published>{{ post.date | rssDate }}</published>
 		<updated>{{ post.date | rssDate }}</updated>
 	</entry>
 	{%- endfor %}

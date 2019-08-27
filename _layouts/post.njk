@@ -2,7 +2,7 @@
 title: Post
 layout: base
 ---
-<article id="article" class="ml-auto mr-auto" style="width:{{ theme.main_width }}">
+<article id="article" class="ml-auto mr-auto h-entry" style="width:{{ theme.main_width }}">
 
   {% if title %}
     <h1 class="text-gray-900 p-name">{{ title }}</h1>
@@ -33,7 +33,7 @@ layout: base
     {% endif %}
     {% for tag in tags %}
       {% if tag == topic %}
-        <span class="bg-gray-200 rounded font-medium px-2 py-1 my-1 mr-1">
+        <span class="bg-gray-200 rounded font-medium px-2 py-1 my-1 mr-1 p-category">
           <a href="/{{ tag }}">@{{ tag }}</a>
         </span>
       {% else %}

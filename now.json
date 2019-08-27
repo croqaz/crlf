@@ -1,0 +1,30 @@
+{
+    "name": "crlf",
+    "version": 2,
+    "regions": [
+        "lhr",
+        "dub"
+    ],
+    "routes": [
+        {
+            "src": "/(.+\\.woff2)$",
+            "headers": {
+                "Cache-Control": "s-maxage=604800, max-age=604800"
+            }
+        },
+        {
+            "src": "/(.+\\.(?:jpg|png|ico))$",
+            "headers": {
+                "Cache-Control": "s-maxage=604800, max-age=604800"
+            }
+        },
+        {
+            "handle": "filesystem"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/404.html",
+            "status": 404
+        }
+    ]
+}
