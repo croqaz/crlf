@@ -82,7 +82,9 @@ module.exports = function(config) {
 
   // Collections
   const collectionNotesAndArticles = collection => {
-    return collection.getFilteredByGlob(['log/notes/*.md', 'log/articles/*.md'])
+    return collection
+      .getFilteredByGlob(['log/notes/*.md', 'log/articles/*.md'])
+      .filter(c => !c.data.draft)
   }
   config.addCollection('posts', collectionNotesAndArticles)
   config.addCollection('postList', function(collection) {

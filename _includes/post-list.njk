@@ -1,13 +1,17 @@
 <div class="flex my-2">
   <ul class="posts-list flex-grow {{ theme.posts_list_color }} text-sm md:text-base">
   {%- for post in posts %}
+    {% if post.data.draft %}
+    {# ignore #}
+    {% else %}
     <li class="post-item py-2">
         <a href="{{ post.url | url }}" class="flex justify-between">
-        {% if post.data.title %}{{ post.data.title }}{% else %}<code>{{ post.url }}</code>{% endif %}
+        {% if post.data.title %}{{ post.data.title }}{% else %}<code>{{ post.url }}</code>{% endif -%}
         <time class="post-day" datetime="{{ post.date | rssDate }}">
           {{ post.date | fmtDate('yyyy LLL dd') }}</time>
         </a>
     </li>
+    {% endif -%}
   {% endfor -%}
   </ul>
 </div>
