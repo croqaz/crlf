@@ -1,10 +1,6 @@
 ---
 title: Home
 layout: list
-pagination:
-  data: collections.posts
-  alias: posts
-  reverse: true
-  size: 5
 ---
+{% set posts = collections.recentPosts %}
 {% include "post-list.njk" %}

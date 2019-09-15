@@ -8,12 +8,13 @@ eleventyExcludeFromCollections: true
 	<title>{{ site.title }}</title>
 	<id>{{ site.feed.url }}</id>
 	<link href="{{ site.feed.url }}" rel="self"/>
-	<updated>{{ collections.articles | rssLastUpdatedDate }}</updated>
+	<updated>{{ collections.recentPosts | rssLastUpdatedDate }}</updated>
 	<author>
 		<name>{{ site.author.name }}</name>
 		<uri>{{ site.author.url }}</uri>
 	</author>
-	{%- for post in collections.articles | reverse %}
+
+	{%- for post in collections.recentPosts -%}
 	{% set absolutePostUrl %}{{ post.url | url | absoluteUrl(site.url) }}{% endset %}
 	<entry>
 		<id>{{ absolutePostUrl }}</id>
@@ -23,5 +24,5 @@ eleventyExcludeFromCollections: true
 		<published>{{ post.date | rssDate }}</published>
 		<updated>{{ post.date | rssDate }}</updated>
 	</entry>
-	{%- endfor %}
+	{%- endfor -%}
 </feed>

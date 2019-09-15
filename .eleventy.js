@@ -84,15 +84,20 @@ module.exports = function(config) {
   const collectionNotesAndArticles = collection => {
     return collection
       .getFilteredByGlob(['log/notes/*.md', 'log/articles/*.md'])
-      .filter(c => !c.data.draft)
+      .filter(c => !c.data.draft && c.data.tags)
   }
   config.addCollection('posts', collectionNotesAndArticles)
+  config.addCollection('recentPosts', function (collection) {
+    const posts = []
+    collectionNotesAndArticles(collection).forEach(c => {
+      posts.push(c)
+    })
+    posts.reverse()
+    return posts.slice(0, 5)
+  })
   config.addCollection('postList', function(collection) {
     const posts = []
     collectionNotesAndArticles(collection).forEach(c => {
-      if (!c.data.tags) {
-        return
-      }
       const { title, date, author, topic, tags } = c.data
       posts.push({ title, date, author, topic, tags })
     })
@@ -102,9 +107,6 @@ module.exports = function(config) {
     const tags = {}
     const sorted = {}
     collectionNotesAndArticles(collection).forEach(c => {
-      if (!c.data.tags) {
-        return
-      }
       for (const t of c.data.tags) {
         if (!tags[t]) {
           tags[t] = 1
