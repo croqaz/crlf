@@ -22,7 +22,7 @@
   "keywords": [],
   "license": "MIT",
   "dependencies": {
-    "@11ty/eleventy": "0.8.x",
+    "@11ty/eleventy": "0.9.x",
     "@11ty/eleventy-plugin-rss": "1.x",
     "@11ty/eleventy-plugin-syntaxhighlight": "2.x",
     "@fullhuman/postcss-purgecss": "1.x",
