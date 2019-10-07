@@ -11,7 +11,7 @@
     "url": "git://github.com/croqaz/crlf.git"
   },
   "scripts": {
-    "build": "npm run clean && npm run css-build && npm run css-optim && eleventy",
+    "build": "npm run css-build && npm run css-optim && eleventy",
     "fmt": "npx prettier --write {.*,*}.js --print-width 100 --no-semi --single-quote --trailing-comma es5",
     "clean": "rm -r website/",
     "css-build": "postcss postcss/style.pcss --verbose -o css/styles.css",
@@ -33,6 +33,7 @@
     "markdown-it-task-lists": "2.x",
     "postcss-cli": "6.x",
     "postcss-nested": "4.x",
+    "prismjs": "1.x",
     "tailwindcss": "1.1.x"
   },
   "devDependencies": {

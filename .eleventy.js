@@ -64,7 +64,9 @@ function htmlMinTransform(value, outputPath) {
 
 module.exports = function(config) {
   config.addPlugin(pluginRss)
-  config.addPlugin(syntaxHighlight)
+  config.addPlugin(syntaxHighlight, {
+    templateFormats: ['javascript', 'python', 'ruby', 'go', 'html', 'css', 'json']
+  })
   config.setDataDeepMerge(true)
 
   // Universal filters
