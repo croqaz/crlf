@@ -19,6 +19,13 @@
             }
         },
         {
+            "src": "/favicon(.*\\.(?:png|ico))$",
+            "headers": {
+                "Cache-Control": "s-maxage=31536000, max-age=31536000, immutable",
+                "X-Content-Type-Options": "no-sniff"
+            }
+        },
+        {
             "handle": "filesystem"
         },
         {
