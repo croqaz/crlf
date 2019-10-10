@@ -26,6 +26,7 @@ function setupMarkdown() {
 
   md.renderer.rules.link_open = function(tokens, idx, options, env, self) {
     const token = tokens[idx]
+    const rIndex = token.attrIndex('rel')
     const sIndex = token.attrIndex('href')
     const tIndex = token.attrIndex('target')
 
@@ -34,10 +35,15 @@ function setupMarkdown() {
       return defaultRender(tokens, idx, options, env, self)
     }
 
+    if (rIndex < 0) {
+      token.attrPush(['rel', 'noopener']) // add new attribute
+    } else {
+      token.attrs[rIndex][1] += ' noopener' // append value for existing attr
+    }
     if (tIndex < 0) {
       token.attrPush(['target', '_blank']) // add new attribute
     } else {
-      token.attrs[tIndex][1] = '_blank' // replace value of existing attr
+      token.attrs[tIndex][1] += ' _blank' // append value for existing attr
     }
     // pass token to default renderer
     return defaultRender(tokens, idx, options, env, self)
