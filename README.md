@@ -7,8 +7,9 @@ Features:
 * fully responsive for all page sizes ;
 * built with accessibility in mind ;
 * score 100 on Google PageSpeed Insights and score 97 on tools.pingdom.com ;
-* some colors and backgrounds are customizable in data/theme.json ;
+* most of the colors and backgrounds are customizable in data/theme.json ;
 * feed.xml and sitemap.xml ;
+* analytics powered by [getinsights.io](https://getinsights.io/) - a privacy-focused analytics platform ;
 * [11ty](https://11ty.io/) to generate the HTML ;
 * [HTML minifier](https://kangax.github.io/html-minifier/) to compress the HTML ;
 * [TailwindCSS](https://tailwindcss.com/) to style the HTML ;
