@@ -15,5 +15,13 @@ title: Base
       {{ content | safe }}
     </section>
     {% include "footer.njk" %}
+    <script src="https://getinsights.io/static/js/insights.js"></script>
+    <script>
+    insights.init('{{ site.insights_api_key }}', {
+      ignoreErrors: true,
+      disabled: window.location.hostname === 'localhost'
+    })
+    insights.trackPages()
+    </script>
   </body>
 </html>

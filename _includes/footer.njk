@@ -1,12 +1,13 @@
-<footer id="footer" class="{{ theme.footer_bg }} text-center p-3 md:p-5 w-full" role="contentinfo">
+<footer id="footer" role="contentinfo" class="{{ theme.footer_bg }} text-center shadow-md p-2 md:p-4 w-full -mt-px">
   <div class="h-card">
-    <p class="text-sm md:text-base leading-relaxed text-gray-900">
+    <p class="text-sm md:text-base leading-relaxed {{ theme.footer_1st_color }}">
       &copy; {{ site.copyright.from }}
       <a rel="me" class="p-name u-url" href="/author/">{{ site.copyright.name }}</a>.
     </p>
-    <p class="text-xs md:text-sm leading-tight text-gray-600">Except where otherwise noted, the text content on this site is licensed under
-    <a rel="license noopener" href="{{ site.license.link }}" target="_blank" title="{{ site.license.title }}">
-      {{ site.license.name }}</a>.
+    <p class="text-xs md:text-sm leading-relaxed {{ theme.footer_2nd_color }}">
+      Except where otherwise noted, the text content on this site is licensed under
+      <a rel="license noopener" href="{{ site.license.link }}" target="_blank" title="{{ site.license.title }}">
+        {{ site.license.name }}</a>.
     </p>
   </div>
 </footer>

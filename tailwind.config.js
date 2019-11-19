@@ -21,6 +21,16 @@ module.exports = {
       indigo: colors.indigo,
       purple: colors.purple,
     },
+    extend: {
+      colors: {
+        'terra-white': '#F7F3ED',
+        'terra-light': '#E8DDCB',
+        'terra': '#CDB380',
+        'acqua': '#036564',
+        'acqua-dark': '#033649',
+        'abisso': '#031634',
+      }
+    },
   },
   variants: {},
   corePlugins: {

@@ -7,7 +7,7 @@ permalink: /topics/
 {% for name, ico in site.topics %}
   <li class="mb-1">
   <a href="/{{ name }}/">
-    <span class="inline-block text-center w-6 bg-gray-200">{{ ico }}</span> {{ name | title }}</a>
+    <span class="inline-block text-center w-6 {{ theme.tag_bg }}">{{ ico }}</span> {{ name | title }}</a>
   </li>
 {% endfor %}
 </ul>
@@ -16,7 +16,7 @@ permalink: /topics/
 
 <div class="tags text-sm">
   {% for tag, count in collections.tagList %}
-    <span class="inline-block {{ theme.posts_list_color }} bg-gray-200 rounded px-2 py-1 my-1">
+    <span class="inline-block {{ theme.posts_list_color }} {{ theme.tag_bg }} rounded px-2 py-1 my-1">
       <a href="/tags/{{ tag }}">{{ tag }}<sup class="ml-1 text-gray-600">{{ count }}</sup></a>
     </span>
     &nbsp;

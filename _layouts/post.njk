@@ -5,10 +5,10 @@ layout: base
 <article id="article" class="ml-auto mr-auto h-entry" style="width:{{ theme.main_width }}">
 
   {% if title %}
-    <h1 class="text-gray-900 p-name">{{ title }}</h1>
+    <h1 class="{{ theme.post_h1_color }} p-name">{{ title }}</h1>
   {% endif %}
   {% if excerpt %}
-    <h3 class="text-gray-600 p-summary">{{ excerpt }}</h3>
+    <h3 class="{{ theme.post_h3_color }} p-summary">{{ excerpt }}</h3>
   {% endif %}
 
   <section class="text-gray-800 pt-2 entry-meta">
@@ -33,11 +33,11 @@ layout: base
     {% endif %}
     {% for tag in tags %}
       {% if tag == topic %}
-        <span class="bg-gray-200 rounded font-medium px-2 py-1 my-1 mr-1 p-category">
+        <span class="{{ theme.tag_bg }} rounded font-medium px-2 py-1 my-1 mr-1 p-category">
           <a href="/{{ tag }}">@{{ tag }}</a>
         </span>
       {% else %}
-        <span class="bg-gray-200 rounded px-2 py-1 my-1 mr-1">
+        <span class="{{ theme.tag_bg }} rounded px-2 py-1 my-1 mr-1">
           <a href="/tags/{{ tag }}">#{{ tag }}</a>
         </span>
       {% endif %}

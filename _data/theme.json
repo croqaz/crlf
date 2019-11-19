@@ -1,10 +1,19 @@
 {
-  "body_bg": "bg-gray-100",
-  "footer_bg": "bg-gray-200",
-  "header_bg": "bg-gray-300",
-  "header_h1_color": "text-purple-900",
-  "header_h3_color": "text-gray-600",
+  "body_bg": "bg-terra-white",
+  "banner_height": "33vh",
+  "footer_1st_color": "text-abisso",
+  "footer_2nd_color": "text-acqua",
+  "footer_bg": "bg-terra-light",
+  "header_1st_color": "text-abisso",
+  "header_2nd_color": "text-acqua",
+  "header_bg": "bg-terra-light",
   "main_width": "64ch",
-  "navigation_bg": "bg-gray-600",
-  "posts_list_color": "text-indigo-900"
+  "nav_bg": "bg-abisso",
+  "nav_link_color": "text-terra-light",
+  "nav_link_hover": "bg-acqua-dark",
+  "post_h1_color": "text-abisso",
+  "post_h3_color": "text-acqua",
+  "posts_list_color": "text-abisso",
+  "posts_list_hover": "text-acqua",
+  "tag_bg": "bg-terra-light"
 }
