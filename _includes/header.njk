@@ -14,33 +14,33 @@
   <div class="w-full flex flex-grow items-center text-sm md:text-base w-auto">
     <div class="flex-grow leading-none {{ theme.nav_link_color }}">
     {% if topic %}
-      <a href="/{{ topic }}/" class="inline-block rounded px-4 py-2 hover:{{ theme.nav_link_hover }}">
+      <a href="/{{ topic }}/" class="inline-block rounded px-4 py-2 {{ theme.nav_link_hover }}">
         {{ topic | title }}
       </a>
     {% else %}
-      <a href="/articles/" class="inline-block rounded px-4 py-2 hover:{{ theme.nav_link_hover }}">
+      <a href="/articles/" class="inline-block rounded px-4 py-2 {{ theme.nav_link_hover }}">
         Articles
       </a>
-      <a href="/notes/" class="inline-block rounded px-4 py-2 hover:{{ theme.nav_link_hover }}">
+      <a href="/notes/" class="inline-block rounded px-4 py-2 {{ theme.nav_link_hover }}">
         Notes
       </a>
     {% endif %}
 
       <a href="/topics/" title="Categories / Tags"
         class="inline-block px-2 py-2 rounded border-l border-r font-medium text-orange-200
-          hover:text-terra hover:{{ theme.nav_link_hover }}">
+          hover:text-terra {{ theme.nav_link_hover }}">
         &;&;
       </a>
-      <a href="/about/" class="inline-block rounded px-4 py-2 hover:{{ theme.nav_link_hover }}">
+      <a href="/about/" class="inline-block rounded px-4 py-2 {{ theme.nav_link_hover }}">
         About
       </a>
     </div>
 
-    <a href='https://webring.xxiivv.com/#random' class="rounded px-2 py-1 hover:{{ theme.nav_link_hover }}"
+    <a href='https://webring.xxiivv.com/#random' class="rounded px-2 py-1 {{ theme.nav_link_hover }}"
         target='_blank' rel="noopener noreferrer">
       <img id="webring" src='https://webring.xxiivv.com/icon.white.svg'/>
     </a>
-    <a href="/feed.xml" class="rounded leading-none px-2 py-2 text-white hover:{{ theme.nav_link_hover }}">
+    <a href="/feed.xml" class="rounded leading-none px-2 py-2 text-white {{ theme.nav_link_hover }}">
       RSS</a>
   </div>
 </nav>

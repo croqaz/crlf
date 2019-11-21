@@ -4,7 +4,7 @@
     {% if post.data.draft %}
     {# ignore #}
     {% else %}
-    <li class="post-item py-2 hover:{{ theme.posts_list_hover }} ">
+    <li class="post-item py-2 {{ theme.posts_list_hover }} ">
         <a href="{{ post.url | url }}" class="flex justify-between">
         {% if post.data.title %}{{ post.data.title }}{% else %}<code>{{ post.url }}</code>{% endif -%}
         <time class="post-day" datetime="{{ post.date | rssDate }}">

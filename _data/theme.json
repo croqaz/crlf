@@ -10,10 +10,10 @@
   "main_width": "64ch",
   "nav_bg": "bg-abisso",
   "nav_link_color": "text-terra-light",
-  "nav_link_hover": "bg-acqua-dark",
+  "nav_link_hover": "hover:bg-acqua-dark",
   "post_h1_color": "text-abisso",
   "post_h3_color": "text-acqua",
   "posts_list_color": "text-abisso",
-  "posts_list_hover": "text-acqua",
+  "posts_list_hover": "hover:text-acqua",
   "tag_bg": "bg-terra-light"
 }
