@@ -1,18 +1,20 @@
 ---
-title: Topics
+title: § Topics
 layout: list
 permalink: /topics/
 ---
 <ul class="mt-4">
 {% for name, ico in site.topics %}
-  <li class="mb-1">
+  <li class="mb-2">
   <a href="/{{ name }}/">
-    <span class="inline-block text-center w-6 {{ theme.tag_bg }}">{{ ico }}</span> {{ name | title }}</a>
+    <span class="w-6 {{ theme.tag_bg }} rounded px-2 py-1">
+      {{ ico }} {{ name | title }}</span>
+    </a>
   </li>
 {% endfor %}
 </ul>
 
-<h3 class="text-2xl my-3">Tags</h3>
+<h3 class="text-2xl my-3">§ Tags</h3>
 
 <div class="tags text-sm">
   {% for tag, count in collections.tagList %}
