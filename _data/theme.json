@@ -8,6 +8,7 @@
   "header_2nd_color": "text-acqua",
   "header_bg": "bg-terra-light",
   "main_width": "64ch",
+  "photo_width": "92ch",
   "nav_bg": "bg-abisso",
   "nav_link_color": "text-terra-light",
   "nav_link_hover": "hover:bg-acqua-dark",

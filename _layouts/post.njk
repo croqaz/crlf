@@ -2,7 +2,8 @@
 title: Post
 layout: base
 ---
-<article id="article" class="ml-auto mr-auto h-entry" style="width:{{ theme.main_width }}">
+<article id="article" class="ml-auto mr-auto h-entry"
+  style="{% if topic === 'photos' %}max-width:{{ theme.photo_width }}{% else %}width:{{ theme.main_width }}{% endif %}">
 
   {% if title %}
     <h1 class="{{ theme.post_h1_color }} p-name">{{ title }}</h1>
