@@ -1,0 +1,9 @@
+---
+title: Drafts
+layout: list
+permalink: /{{title | lower}}/
+eleventyExcludeFromCollections: true
+---
+{% set viewDrafts = true %}
+{% set posts = collections.drafts | reverse %}
+{% include "post-list.njk" %}
