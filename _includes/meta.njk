@@ -11,8 +11,11 @@
 {% endif %}
 
 <title>{{ pageTitle }}</title>
+{% if site.author %}
+<meta name="author" content="{{ site.author.name }}">
+<link rel="author" href="{{ site.author.url }}">
+{% endif %}
 <link rel="canonical" href="{{ currentUrl }}">
-<link rel="author" href="{{ site.author.name }}">
 <link rel="publisher" href="{{ site.url }}">
 
 <!-- Favicons -->
@@ -39,9 +42,8 @@
   <meta property="og:type" content="website" />
 {% endif %}
 
-{% if pageDesc %}
-  <meta name="description" content="{{ pageDesc }}" />
-  <meta property="og:description" content="{{ pageDesc }}" />
+{% if description %}
+  <meta name="description" content="{{ description }}" />
 {% endif %}
 
 {% if socialImage %}

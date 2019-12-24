@@ -71,7 +71,7 @@ function htmlMinTransform(value, outputPath) {
 module.exports = function(config) {
   config.addPlugin(pluginRss)
   config.addPlugin(syntaxHighlight, {
-    templateFormats: ['javascript', 'python', 'ruby', 'go', 'html', 'css', 'json']
+    templateFormats: ['javascript', 'python', 'ruby', 'go', 'html', 'css', 'json'],
   })
   config.setDataDeepMerge(true)
 
@@ -94,8 +94,14 @@ module.exports = function(config) {
       .getFilteredByGlob(['log/notes/*.md', 'log/articles/*.md'])
       .filter(c => !c.data.draft && c.data.tags)
   }
+  const draftsNotesAndArticles = collection => {
+    return collection
+      .getFilteredByGlob(['log/notes/*.md', 'log/articles/*.md'])
+      .filter(c => c.data.draft && c.data.tags)
+  }
   config.addCollection('posts', collectionNotesAndArticles)
-  config.addCollection('recentPosts', function (collection) {
+  config.addCollection('drafts', draftsNotesAndArticles)
+  config.addCollection('recentPosts', function(collection) {
     const posts = []
     collectionNotesAndArticles(collection).forEach(c => {
       posts.push(c)
