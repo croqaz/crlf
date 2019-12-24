@@ -1,7 +1,7 @@
 <div class="flex my-2">
   <ul class="posts-list flex-grow {{ theme.posts_list_color }} text-sm md:text-base">
   {%- for post in posts %}
-    {% if post.data.draft %}
+    {% if post.data.draft and not viewDrafts %}
     {# ignore #}
     {% else %}
     <li class="post-item py-2 {{ theme.posts_list_hover }} ">
