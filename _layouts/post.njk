@@ -2,7 +2,7 @@
 title: Post
 layout: base
 ---
-<article id="article" class="ml-auto mr-auto h-entry"
+<article id="article" class="ml-auto mr-auto h-entry {{ topic }}"
   style="{% if topic === 'photos' %}max-width:{{ theme.photo_width }}{% else %}width:{{ theme.main_width }}{% endif %}">
 
   {% if title %}
