@@ -22,7 +22,7 @@
   "keywords": [],
   "license": "MIT",
   "dependencies": {
-    "@11ty/eleventy": "0.10.0-beta.2",
+    "@11ty/eleventy": "0.10.x",
     "@11ty/eleventy-plugin-rss": "1.x",
     "@11ty/eleventy-plugin-syntaxhighlight": "2.x",
     "@fullhuman/postcss-purgecss": "1.x",
@@ -34,7 +34,7 @@
     "postcss-cli": "6.x",
     "postcss-nested": "4.x",
     "prismjs": "1.x",
-    "tailwindcss": "1.1.x"
+    "tailwindcss": "1.2.x"
   },
   "devDependencies": {
     "prettier": "1.18.2"
