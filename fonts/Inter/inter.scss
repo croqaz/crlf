@@ -2,7 +2,7 @@
 Inter variable font.
 Usage:
 
-  html { font-family: sans-serif; }
+  html { font-family: 'Inter', sans-serif; }
   @supports (font-variation-settings: normal) {
     html { font-family: 'Inter var', sans-serif; }
   }
