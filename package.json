@@ -22,12 +22,12 @@
   "keywords": [],
   "license": "MIT",
   "dependencies": {
-    "@11ty/eleventy": "0.10.x",
+    "@11ty/eleventy": "0.11.x",
     "@11ty/eleventy-plugin-rss": "1.x",
-    "@11ty/eleventy-plugin-syntaxhighlight": "2.x",
-    "@fullhuman/postcss-purgecss": "1.x",
+    "@11ty/eleventy-plugin-syntaxhighlight": "3.x",
+    "@fullhuman/postcss-purgecss": "2.x",
     "autoprefixer": "9.x",
-    "csso-cli": "2.x",
+    "csso-cli": "3.x",
     "html-minifier": "4.x",
     "luxon": "1.x",
     "markdown-it-task-lists": "2.x",
@@ -37,6 +37,6 @@
     "tailwindcss": "1.2.x"
   },
   "devDependencies": {
-    "prettier": "1.18.2"
+    "prettier": "1.19.1"
   }
 }

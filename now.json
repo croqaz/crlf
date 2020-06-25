@@ -17,9 +17,18 @@
             "src": "/favicon(.*\\.(?:png|ico))$",
             "headers": {
                 "Cache-Control": "s-maxage=31536000, max-age=31536000, immutable",
-                "X-Content-Type-Options": "no-sniff"
+                "X-Content-Type-Options": "nosniff"
             }
         },
+        {
+            "src": ".*",
+            "headers": {
+                "Access-Control-Allow-Origin": "https://crlf.site",
+                "X-Content-Type-Options": "nosniff",
+                "X-Frame-Options": "deny"
+            },
+            "continue": true
+          },
         {
             "handle": "filesystem"
         },
