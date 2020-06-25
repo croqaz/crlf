@@ -1,10 +1,5 @@
 {
-    "name": "crlf",
     "version": 2,
-    "regions": [
-        "lhr",
-        "dub"
-    ],
     "routes": [
         {
             "src": "/(.+\\.woff2)$",

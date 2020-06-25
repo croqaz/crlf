@@ -1,5 +1,9 @@
 <footer id="footer" role="contentinfo" class="{{ theme.footer_bg }} text-center shadow-md p-2 md:p-4 w-full -mt-px">
+  {% if page.url === '/author/' %}
+  <div>
+  {% else %}
   <div class="h-card">
+  {% endif %}
     <p class="text-sm md:text-base leading-relaxed {{ theme.footer_1st_color }}">
       &copy; {{ site.copyright.from }}
       <a rel="me" class="p-name u-url" href="/author/">{{ site.copyright.name }}</a>.

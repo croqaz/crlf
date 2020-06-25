@@ -8,7 +8,7 @@ const pluginRss = require('@11ty/eleventy-plugin-rss')
 const syntaxHighlight = require('@11ty/eleventy-plugin-syntaxhighlight')
 
 function setupMarkdown() {
-  const localSrc = /^\/log|\/about|\/author/
+  const localSrc = /^\/log|\/about|\/author|\/projects/
   const md = mdIt({
     html: true,
     breaks: true,
