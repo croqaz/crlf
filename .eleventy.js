@@ -89,31 +89,33 @@ module.exports = function(config) {
   })
 
   // Collections
-  const collectionNotesAndArticles = collection => {
+  const collectionNotesAndArticles = function(collection) {
     return collection
       .getFilteredByGlob(['log/notes/*.md', 'log/articles/*.md'])
       .filter(c => !c.data.draft && c.data.tags)
   }
-  const draftsNotesAndArticles = collection => {
+  const draftsNotesAndArticles = function(collection) {
     return collection
-      .getFilteredByGlob(['log/notes/*.md', 'log/articles/*.md'])
-      .filter(c => c.data.draft && c.data.tags)
+    .getFilteredByGlob(['log/notes/*.md', 'log/articles/*.md'])
+    .filter(c => c.data.draft && c.data.tags)
   }
-  config.addCollection('posts', collectionNotesAndArticles)
-  config.addCollection('drafts', draftsNotesAndArticles)
-  config.addCollection('recentPosts', function(collection) {
+  const recentPosts = function(collection, limit = 5) {
     const posts = []
     collectionNotesAndArticles(collection).forEach(c => {
       posts.push(c)
     })
     posts.reverse()
-    return posts.slice(0, 5)
-  })
+    return posts.slice(0, limit)
+  }
+
+  config.addCollection('posts', collectionNotesAndArticles)
+  config.addCollection('drafts', draftsNotesAndArticles)
+  config.addCollection('recentPosts', recentPosts)
   config.addCollection('postList', function(collection) {
     const posts = []
     collectionNotesAndArticles(collection).forEach(c => {
       const { title, date, author, topic, tags } = c.data
-      posts.push({ title, date, author, topic, tags })
+      posts.push({ title, date, author, topic, tags, url: c.url })
     })
     return posts
   })
@@ -152,7 +154,7 @@ module.exports = function(config) {
   config.setUseGitIgnore(false)
 
   return {
-    templateFormats: ['njk', 'html', 'md'],
+    templateFormats: ['njk', 'md'],
     dir: {
       includes: '_includes',
       layouts: '_layouts',
