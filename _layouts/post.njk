@@ -45,6 +45,32 @@ layout: base
     {% endfor %}
   </section>
 
+  {% if mentions[page.url] %}
+  <section class="mentions text-sm font-medium leading-loose py-2 text-gray-800">
+    <span title="Webmentions">✨ </span>
+    {%- if mentions[page.url]['like-of'] -%}
+      <span class="{{ theme.tag_bg }} rounded px-2 py-1 my-1 mr-1">
+      {{ mentions[page.url]['like-of'] }} Likes
+      </span>
+    {% endif %}
+    {%- if mentions[page.url]['mention-of'] -%}
+      <span class="{{ theme.tag_bg }} rounded px-2 py-1 my-1 mr-1">
+      {{ mentions[page.url]['mention-of'] }} Mentions
+      </span>
+    {% endif %}
+    {%- if mentions[page.url]['repost-of'] -%}
+      <span class="{{ theme.tag_bg }} rounded px-2 py-1 my-1 mr-1">
+      {{ mentions[page.url]['repost-of'] }} Reposts
+      </span>
+    {% endif %}
+    {%- if mentions[page.url]['in-reply-to'] -%}
+      <span class="{{ theme.tag_bg }} rounded px-2 py-1 my-1">
+      {{ mentions[page.url]['in-reply-to'] }} Replies
+      </span>
+    {% endif %}
+  </section>
+  {% endif %}
+
 </article>
 
 {% if hasCode %}
