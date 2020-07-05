@@ -35,6 +35,7 @@ module.exports = {
   variants: {},
   corePlugins: {
     cursor: false,
+    clear: false,
     float: false,
     zIndex: false,
   },

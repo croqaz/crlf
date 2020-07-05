@@ -12,10 +12,14 @@ layout: base
     <h3 class="{{ theme.post_h3_color }} p-summary">{{ excerpt }}</h3>
   {% endif %}
 
-  <section class="text-gray-800 pt-2 entry-meta">
-    <span title="Created at">🗓</span>
-    <time class="dt-published" datetime="{{ page.date | rssDate }}">
-      {{ page.date | fmtDate('yyyy LLL dd, ccc') }}</time>
+  <section class="text-gray-800 pt-2 entry-meta grid grid-cols-2">
+    <span title="Created at">🗓
+      <time class="dt-published" datetime="{{ page.date | rssDate }}">
+        {{ page.date | fmtDate('yyyy LLL dd, ccc') }}</time>
+    </span>
+    {% if source %}
+      <span class="text-right mr-1" title="First posted on/ Original source">🗂️ {{ source }}</span>
+    {% endif %}
   </section>
 
   {% if topic === 'articles' %}
