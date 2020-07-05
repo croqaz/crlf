@@ -34,5 +34,6 @@
       "twitter.com/croqaz": "https://twitter.com/croqaz"
     }
   },
-  "insights_api_key": "zSUGeb95v5VsL0YM"
+  "analytics_site": "https://stat.crlf.site/ingress/35ebb431-473a-4345-beb8-8feac30f031c",
+  "comments_site": "https://comment.crlf.site"
 }

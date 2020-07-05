@@ -1,1 +1,21 @@
 <hr/>
+
+<section class="ml-auto mr-auto py-2" style="width:{{ theme.main_width }}">
+  <div id="remark42"></div>
+</section>
+
+<script defer>
+  remark_config = {
+    host: '{{ site.comments_site }}',
+    url: '{{ page.url }}',
+    site_id: 'crlf',
+  };
+  (function(c, d) {
+    for(const t of c){
+      const s = d.createElement('script');
+      s.src = remark_config.host + '/web/' +t+'.js';
+      s.defer = true;
+      (d.head || d.body).appendChild(s);
+    }
+  })(remark_config.components || ['embed'], document);
+</script>

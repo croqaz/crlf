@@ -42,14 +42,11 @@ title: Base
     <section class="flex mt-4 mb-6 px-6" style="flex:1 0 auto">
       {{ content | safe }}
     </section>
+    {% if layout === 'post' %}
+      {% include "comments.njk" %}
+    {% endif %}
     {% include "footer.njk" %}
-    <script src="https://getinsights.io/static/js/insights.js"></script>
-    <script>
-    insights.init('{{ site.insights_api_key }}', {
-      ignoreErrors: true,
-      disabled: window.location.hostname === 'localhost'
-    })
-    insights.trackPages()
-    </script>
+    <noscript><img src="{{ site.analytics_site }}/pixel.gif"></noscript>
+    <script src="{{ site.analytics_site }}/script.js" defer></script>
   </body>
 </html>
