@@ -103,3 +103,6 @@ log/img/
 
 # logs
 log/*/*.md
+
+# cached mentions
+_data/_webmentions.json
