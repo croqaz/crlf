@@ -76,6 +76,9 @@ module.exports = function(config) {
   config.setDataDeepMerge(true)
 
   // Universal filters
+  config.addFilter('rssDate', dateObj => {
+    return pluginRss.dateToRfc3339(new Date(dateObj))
+  })
   config.addFilter('fmtDate', (dateObj, fmt) => {
     return DateTime.fromJSDate(dateObj, { zone: 'utc' }).toFormat(fmt)
   })
@@ -96,8 +99,8 @@ module.exports = function(config) {
   }
   const draftsNotesAndArticles = function(collection) {
     return collection
-    .getFilteredByGlob(['log/notes/*.md', 'log/articles/*.md'])
-    .filter(c => c.data.draft && c.data.tags)
+      .getFilteredByGlob(['log/notes/*.md', 'log/articles/*.md'])
+      .filter(c => c.data.draft && c.data.tags)
   }
   const recentPosts = function(collection, limit = 5) {
     const posts = []

@@ -2,7 +2,7 @@
   "name": "Cr;Lf;",
   "title": "&Cr; &Lf;",
   "description": "a personal blog and wiki, by Cristi Constantin",
-  "url": "https://crlf.site",
+  "url": "https://crlf.link",
   "topics": {
     "notes": "📔",
     "articles": "📄",
@@ -13,7 +13,7 @@
   "feed": {
     "filename": "feed.xml",
     "path": "/feed.xml",
-    "url": "https://crlf.site/feed.xml"
+    "url": "https://crlf.link/feed.xml"
   },
   "copyright": {
     "from": "2007-2019",
@@ -26,7 +26,7 @@
   },
   "author": {
     "name": "Cristi Constantin",
-    "url": "https://crlf.site/author/",
+    "url": "https://crlf.link/author/",
     "social": {
       "github.com/croqaz": "https://github.com/croqaz",
       "gitlab.com/croqaz": "https://gitlab.com/croqaz",
