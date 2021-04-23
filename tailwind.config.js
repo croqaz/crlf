@@ -39,4 +39,13 @@ module.exports = {
     float: false,
     zIndex: false,
   },
+  purge: [
+    './_includes/*.njk',
+    './_layouts/*.njk',
+    './_pages/*.njk',
+    './log/*.md',
+    './log/notes/*.md',
+    './log/articles/*.md',
+    './_data/theme.json',
+  ],
 }

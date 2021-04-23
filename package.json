@@ -25,20 +25,21 @@
     "@11ty/eleventy": "0.12.1",
     "@11ty/eleventy-plugin-rss": "1.1.1",
     "@11ty/eleventy-plugin-syntaxhighlight": "3.1.0",
-    "@fullhuman/postcss-purgecss": "2.x",
-    "autoprefixer": "9.x",
+    "@fullhuman/postcss-purgecss": "4.x",
+    "autoprefixer": "9.8.x",
     "csso-cli": "3.x",
     "html-minifier": "4.x",
     "lodash.unionby": "4.x",
     "luxon": "1.x",
     "markdown-it-task-lists": "2.x",
     "node-fetch": "2.x",
-    "postcss-cli": "7.x",
-    "postcss-nested": "4.x",
-    "prismjs": "1.23.0",
-    "tailwindcss": "1.3.x"
+    "postcss": "8.2.x",
+    "postcss-cli": "8.3.x",
+    "postcss-nested": "4.2.x",
+    "prismjs": "1.23.x",
+    "tailwindcss": "1.9.x"
   },
   "devDependencies": {
-    "prettier": "1.19.1"
+    "prettier": "1.19.x"
   }
 }
