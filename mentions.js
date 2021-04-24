@@ -7,7 +7,7 @@ const url = require('url')
 const fetch = require('node-fetch')
 const unionBy = require('lodash.unionby')
 
-const domain = 'crlf.site'
+const domain = 'crlf.link'
 
 const CACHE_DIR = '_data'
 const API = 'https://webmention.io/api'
@@ -76,7 +76,7 @@ function writeToCache(data) {
   })
 }
 
-function processWebmentions(data, ignore = 'https://crlf.site/') {
+function processWebmentions(data, ignore = `https://${domain}/`) {
   // url: { like-of: 0, repost-of: 0, in-reply-to: 0, from:[] }
   const mentions = {}
   for (const c of data.children) {

@@ -11,11 +11,11 @@
     "url": "git://github.com/croqaz/crlf.git"
   },
   "scripts": {
-    "build": "npm run clean && npm run css-build && npm run css-optim && eleventy",
+    "build": "npm run clean && npm run css-build && npm run css-optim && eleventy && du -h -d 1 website",
     "fmt": "npx prettier --write {.*,*}.js --print-width 100 --no-semi --single-quote --trailing-comma es5",
     "clean": "rm -r website/log/ website/tags/ website/topics/",
-    "css-build": "postcss postcss/style.pcss --verbose -o css/styles.css",
-    "css-optim": "csso css/styles.css --stat --comments none --output css/styles.css",
+    "css-build": "postcss postcss/style.pcss --verbose -o css/styles.css && ls -lah css/",
+    "css-optim": "csso css/styles.css --stat --comments none --output css/styles.css && ls -la css/",
     "prestart": "npm run css-build",
     "start": "eleventy --serve"
   },
