@@ -150,6 +150,7 @@ module.exports = function(config) {
   config.addPassthroughCopy('css')
   config.addPassthroughCopy('gpg')
   config.addPassthroughCopy('fonts')
+  config.addPassthroughCopy('icons')
   config.addPassthroughCopy('logo')
   config.addPassthroughCopy('log/img')
 

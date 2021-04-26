@@ -26,7 +26,7 @@
     "@11ty/eleventy-plugin-rss": "1.1.1",
     "@11ty/eleventy-plugin-syntaxhighlight": "3.1.0",
     "@fullhuman/postcss-purgecss": "4.x",
-    "autoprefixer": "9.8.x",
+    "autoprefixer": "10.2.x",
     "csso-cli": "3.x",
     "html-minifier": "4.x",
     "lodash.unionby": "4.x",
@@ -37,7 +37,7 @@
     "postcss-cli": "8.3.x",
     "postcss-nested": "4.2.x",
     "prismjs": "1.23.x",
-    "tailwindcss": "1.9.x"
+    "tailwindcss": "2.1.x"
   },
   "devDependencies": {
     "prettier": "1.19.x"

@@ -4,11 +4,9 @@
   "description": "a personal blog and wiki, by Cristi Constantin",
   "url": "https://crlf.link",
   "topics": {
-    "notes": "📔",
-    "articles": "📄",
-    "bookmarks": "🔗",
-    "quotes": "❝",
-    "photos": "📷"
+    "notes": "sticky-note",
+    "articles": "file",
+    "photos": "camera"
   },
   "feed": {
     "filename": "feed.xml",

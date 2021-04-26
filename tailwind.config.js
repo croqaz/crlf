@@ -1,4 +1,4 @@
-const { colors } = require('tailwindcss/defaultTheme')
+const colors = require('tailwindcss/colors')
 
 module.exports = {
   theme: {
@@ -32,20 +32,30 @@ module.exports = {
       },
     },
   },
-  variants: {},
   corePlugins: {
     cursor: false,
     clear: false,
     float: false,
     zIndex: false,
   },
-  purge: [
-    './_includes/*.njk',
-    './_layouts/*.njk',
-    './_pages/*.njk',
-    './log/*.md',
-    './log/notes/*.md',
-    './log/articles/*.md',
-    './_data/theme.json',
-  ],
+  darkMode: false,
+  purge: {
+    enabled: true,
+    content: [
+      './_includes/*.njk',
+      './_layouts/*.njk',
+      './_pages/*.njk',
+      './log/*.md',
+      './log/notes/*.md',
+      './log/photos/*.md',
+      './log/articles/*.md',
+      './_data/theme.json',
+    ],
+    options: {
+      fontFace: true,
+      keyframes: true,
+      safelist: ['h[1-5r]', 'blockquote', 'pre', 'code', 'ico-[a-z]'],
+    },
+    preserveHtmlElements: false,
+  },
 }
