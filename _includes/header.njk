@@ -4,7 +4,7 @@
   {% if hasHeader %}
   <section role="banner" class="flex content-center items-center" style="min-height:{{ theme.banner_height }}">
     <div class="flex-grow text-center has-special-font pb-2">
-      <h1 class="text-5xl {{ theme.header_1st_color }}">{{ site.title }}</h1>
+      <h1 class="text-7xl {{ theme.header_1st_color }}">{{ site.title }}</h1>
       <h3 class="text-lg {{ theme.header_2nd_color }}">{{ site.shortDesc }}</h3>
     </div>
   </section>
@@ -24,7 +24,7 @@
       <a href="/notes/" class="inline-block rounded px-4 py-2 {{ theme.nav_link_hover }}">
         Notes
       </a>
-      <a href="/photos/" class="inline-block rounded px-4 py-2 {{ theme.nav_link_hover }}">
+      <a href="/photos/" class="hidden md:inline-block rounded px-4 py-2 {{ theme.nav_link_hover }}">
         Photos
       </a>
     {% endif %}

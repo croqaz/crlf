@@ -20,12 +20,12 @@ layout: base
     </span>
     {% if source %}
       <span class="text-right mr-1" title="First posted on/ Original source">
-      <span class="ico ico-box"></span>{{ source }}</span>
+      <span class="ico ico-box"></span> {{ source }}</span>
     {% endif %}
   </section>
 
   {% if topic === 'articles' %}
-  <section class="text-gray-800 pt-2" title="Reading time">
+  <section class="text-gray-800 pt-2 -m-0.5" title="Reading time">
     <span class="ico ico-clock"></span> <span>{{ content | getReadingTime }} min</span>
   </section>
   {% endif %}
@@ -53,7 +53,7 @@ layout: base
 
   {% if mentions[page.url] %}
   <section class="mentions text-sm font-medium leading-loose py-2 text-gray-800">
-    <span title="Webmentions">✨ </span>
+    <span title="Webmentions"><span class="ico ico-comments"></span> </span>
     {%- if mentions[page.url]['like-of'] -%}
       <span class="{{ theme.tag_bg }} rounded px-2 py-1 my-1 mr-1">
       {{ mentions[page.url]['like-of'] }} Likes

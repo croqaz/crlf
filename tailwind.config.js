@@ -33,9 +33,10 @@ module.exports = {
     },
   },
   corePlugins: {
-    cursor: false,
     clear: false,
+    cursor: false,
     float: false,
+    visibility: false,
     zIndex: false,
   },
   darkMode: false,
