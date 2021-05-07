@@ -20,7 +20,7 @@ function setupMarkdown() {
 
   const defaultRender =
     md.renderer.rules.link_open ||
-    function(tokens, idx, options, env, self) {
+    function(tokens, idx, options, _, self) {
       return self.renderToken(tokens, idx, options)
     }
 
@@ -68,10 +68,14 @@ function htmlMinTransform(value, outputPath) {
   return value
 }
 
+function isArticle(entry) {
+  return entry.data.tags.indexOf('article') > -1 || entry.template.inputContent.length > 10000
+}
+
 module.exports = function(config) {
   config.addPlugin(pluginRss)
   config.addPlugin(syntaxHighlight, {
-    templateFormats: ['javascript', 'python', 'ruby', 'go', 'html', 'css', 'json'],
+    templateFormats: ['javascript', 'python', 'ruby', 'go', 'elixir', 'html', 'css', 'json'],
   })
   config.setDataDeepMerge(true)
 
@@ -92,31 +96,41 @@ module.exports = function(config) {
   })
 
   // Collections
-  const collectionNotesAndArticles = function(collection) {
+  const entries = function(collection) {
     return collection
-      .getFilteredByGlob(['log/notes/*.md', 'log/articles/*.md'])
+      .getFilteredByGlob('log/entries/*.md')
       .filter(c => !c.data.draft && c.data.tags)
   }
-  const draftsNotesAndArticles = function(collection) {
-    return collection
-      .getFilteredByGlob(['log/notes/*.md', 'log/articles/*.md'])
-      .filter(c => c.data.draft && c.data.tags)
+  const noteEntries = function(collection) {
+    return entries(collection)
+      .filter(c => !isArticle(c))
   }
-  const recentPosts = function(collection, limit = 5) {
+  const longEntries = function(collection) {
+    return entries(collection)
+      .filter(c => isArticle(c))
+  }
+  const draftEntries = function(collection) {
+    return collection
+      .getFilteredByGlob('log/entries/*.md')
+      .filter(c => c.data.tags && c.data.draft)
+  }
+  const recentEntries = function(collection, limit = 6) {
     const posts = []
-    collectionNotesAndArticles(collection).forEach(c => {
+    entries(collection).forEach(c => {
       posts.push(c)
     })
     posts.reverse()
     return posts.slice(0, limit)
   }
 
-  config.addCollection('posts', collectionNotesAndArticles)
-  config.addCollection('drafts', draftsNotesAndArticles)
-  config.addCollection('recentPosts', recentPosts)
+  config.addCollection('entries', entries)
+  config.addCollection('notes', noteEntries)
+  config.addCollection('long', longEntries)
+  config.addCollection('recent', recentEntries)
+  config.addCollection('drafts', draftEntries)
   config.addCollection('postList', function(collection) {
     const posts = []
-    collectionNotesAndArticles(collection).forEach(c => {
+    entries(collection).forEach(c => {
       const { title, date, author, topic, tags } = c.data
       posts.push({ title, date, author, topic, tags, url: c.url })
     })
@@ -125,7 +139,7 @@ module.exports = function(config) {
   config.addCollection('tagList', function(collection) {
     const tags = {}
     const sorted = {}
-    collectionNotesAndArticles(collection).forEach(c => {
+    noteEntries(collection).forEach(c => {
       for (const t of c.data.tags) {
         if (!tags[t]) {
           tags[t] = 1

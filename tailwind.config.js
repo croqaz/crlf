@@ -47,9 +47,8 @@ module.exports = {
       './_layouts/*.njk',
       './_pages/*.njk',
       './log/*.md',
-      './log/notes/*.md',
+      './log/entries/*.md',
       './log/photos/*.md',
-      './log/articles/*.md',
       './_data/theme.json',
     ],
     options: {

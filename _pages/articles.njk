@@ -4,5 +4,5 @@ layout: list
 permalink: /{{title | lower}}/
 eleventyExcludeFromCollections: true
 ---
-{% set posts = collections.articles | reverse %}
+{% set posts = collections.long | reverse %}
 {% include "post-list.njk" %}
