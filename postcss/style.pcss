@@ -24,6 +24,15 @@ ul.posts-list li.post-item {
     @apply border-b border-dashed border-blue-900;
 }
 
+#main .tags {
+    display: flex;
+    flex-flow: row wrap;
+}
+#main .tags .tag {
+    @apply flex-auto;
+    max-width: 7.5rem;
+}
+
 blockquote {
     border-left: 0.5rem;
     @apply border-solid border-gray-600 pl-3;
