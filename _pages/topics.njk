@@ -18,7 +18,7 @@ permalink: /topics/
 
 <div class="tags text-sm">
   {% for tag, count in collections.tagList %}
-    <span class="inline-block {{ theme.posts_list_color }} {{ theme.tag_bg }} rounded px-2 py-1 my-1">
+    <span class="tag rounded {{ theme.posts_list_color }} {{ theme.tag_bg }} px-2 py-1 my-1">
       <a href="/tags/{{ tag }}">{{ tag }}<sup class="ml-1 text-gray-600">{{ count }}</sup></a>
     </span>
     &nbsp;

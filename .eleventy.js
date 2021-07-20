@@ -70,7 +70,7 @@ function htmlMinTransform(value, outputPath) {
 
 function isArticle(entry) {
   // By convention, first tag is the most important
-  // so an the first tag=article becomes the category
+  // so the first tag=article becomes the category
   return entry.data.tags.indexOf('article') > -1 || entry.template.inputContent.length > 10000
 }
 
@@ -149,7 +149,7 @@ module.exports = function(config) {
   config.addCollection('tagList', function(collection) {
     const tags = {}
     const sorted = {}
-    noteEntries(collection).forEach(c => {
+    entries(collection).forEach(c => {
       for (const t of c.data.tags) {
         if (!tags[t]) {
           tags[t] = 1
