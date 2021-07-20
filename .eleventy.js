@@ -1,3 +1,4 @@
+// const crypto = require('crypto')
 const { DateTime } = require('luxon')
 
 const mdIt = require('markdown-it')
@@ -102,12 +103,24 @@ module.exports = function(config) {
     return collection
       .getFilteredByGlob('log/entries/*.md')
       .filter(c => !c.data.draft && c.data.tags)
+      // .map(c => {
+      //   const hash = crypto.createHash('sha256')
+      //   if (c.data.title) hash.update(c.data.title)
+      //   hash.update(c.template.inputContent)
+      //   const h = hash.digest('hex')
+      //   c.data.shax = h.substr(0, 8)
+      //   c.data.identicon = `#${h.substr(0, 6)}`
+      //   return c
+      // })
   }
   const noteEntries = function(collection) {
     return entries(collection)
       .filter(c => !isArticle(c))
       .map(c => {
         c.data.topic = 'notes'
+        if (c.data.tags.indexOf('note') !== 0) {
+            c.data.tags.splice(0, 0, 'note')
+        }
         return c
       })
   }
@@ -116,13 +129,14 @@ module.exports = function(config) {
       .filter(c => isArticle(c))
       .map(c => {
         c.data.topic = 'articles'
+        if (c.data.tags.indexOf('article') !== 0) {
+            c.data.tags.splice(0, 0, 'article')
+        }
         return c
       })
   }
   const draftEntries = function(collection) {
-    return collection
-      .getFilteredByGlob('log/entries/*.md')
-      .filter(c => c.data.tags && c.data.draft)
+    return collection.getFilteredByGlob('log/entries/*.md').filter(c => c.data.tags && c.data.draft)
   }
   const recentEntries = function(collection, limit = 6) {
     const posts = []

@@ -34,14 +34,22 @@ layout: base
     {{ content | safe }}
   </section>
 
+{#
+  <section class="hash text-xs leading-loose py-2">
+    <span class="rounded" title="Content hash" style="background:{{ identicon }}99">
+    <span class="p-1">Hash {{ shax }}</span>
+    </span>
+  </section>
+#}
+
   <section class="tags text-sm leading-loose py-2">
     {% if tags %}
     <span title="Tagged as"><span class="ico ico-tags"></span></span>
     {% endif %}
     {% for tag in tags %}
-      {% if tag == topic %}
+      {% if tag + "s" == topic %}
         <span class="{{ theme.tag_bg }} rounded font-medium px-2 py-1 my-1 mr-1 p-category">
-          <a href="/{{ tag }}">@{{ tag }}</a>
+          <a href="/{{ topic }}">@{{ topic }}</a>
         </span>
       {% else %}
         <span class="{{ theme.tag_bg }} rounded px-2 py-1 my-1 mr-1">
