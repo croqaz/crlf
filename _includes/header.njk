@@ -17,6 +17,10 @@
       <a href="/{{ topic }}/" class="inline-block rounded px-4 py-2 {{ theme.nav_link_hover }}">
         {{ topic | title }}
       </a>
+    {% elif layout === 'wiki' %}
+      <a href="/mem/" class="inline-block rounded px-4 py-2 {{ theme.nav_link_hover }}">
+        MEM
+      </a>
     {% else %}
       <a href="/articles/" class="inline-block rounded px-4 py-2 {{ theme.nav_link_hover }}">
         Articles
