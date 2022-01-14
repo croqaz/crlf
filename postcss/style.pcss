@@ -42,6 +42,11 @@ code {
     @apply text-orange-200 bg-gray-700 px-1;
 }
 
+hr {
+    border-top: 1px solid;
+    @apply border-gray-300 h-px w-full;
+}
+
 img#webring {
     width: 26px;
     height: 26px;
@@ -54,7 +59,7 @@ img#webring {
 }
 
 #remark42 {
-  margin-bottom: 1rem;
+    margin-bottom: 2rem;
 }
 
 /* purgecss start ignore */
@@ -71,40 +76,44 @@ img#webring {
         @apply my-3;
     }
 
-    h1 {
-        font-size: 30px;
-        letter-spacing: -0.021em;
-        line-height: 42px;
-        margin-bottom: 24px;
-        padding-top: 6px;
+    blockquote {
+        border-left: 3px solid #ccc;
+        margin-left: -3px;
     }
 
-    &:first-child h1 {
-        @apply my-0;
+    blockquote>p {
+        margin-top: -1rem;
+    }
+
+    blockquote::before{
+      content: "\201C";
+      font-size: 2.44rem;
+      font-weight: bold;
+      line-height: 1;
+      color: #ccc;
+    }
+
+    h1 {
+        font-size: 2.44rem;
+        line-height: 1.125;
+        margin-bottom: 1.9rem;
     }
 
     h2 {
-        font-size: 24px;
-        letter-spacing: -0.019em;
-        line-height: 34px;
-        margin-bottom: 12px;
-        padding-top: 24px;
+        font-size: 1.953rem;
+        line-height: 1.25;
+        margin-bottom: 1rem;
     }
 
     h3 {
-        font-size: 20px;
-        letter-spacing: -0.017em;
-        line-height: 28px;
-        margin-bottom: 6px;
-        padding-top: 12px;
+        font-size: 1.563em;
+        line-height: 1.25;
+        margin-bottom: 0.75rem;
     }
 
     h4 {
-        font-size: 18px;
-        letter-spacing: -0.014em;
-        line-height: 25px;
-        padding-top: 10px;
-        margin-bottom: 10px;
+        font-size: 1.25em;
+        line-height: 1.125;
     }
 
     section.date, section.tags, section.mentions {
