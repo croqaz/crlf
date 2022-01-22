@@ -32,7 +32,7 @@
     "lodash.unionby": "4.x",
     "luxon": "1.x",
     "markdown-it-task-lists": "2.x",
-    "node-fetch": "2.x",
+    "node-fetch": "3.x",
     "postcss": "8.2.x",
     "postcss-cli": "8.3.x",
     "postcss-nested": "4.2.x",
