@@ -15,7 +15,7 @@
     "fmt": "npx prettier --write {.*,*}.js --print-width 100 --no-semi --single-quote --trailing-comma es5",
     "clean": "rm -r website/log/ website/mem/ website/tags/ website/topics/",
     "css-build": "postcss postcss/style.pcss --verbose -o css/styles.css && ls -lah css/",
-    "css-optim": "csso css/styles.css --stat --comments none --output css/styles.css && ls -la css/",
+    "css-optim": "csso css/styles.css --stat --comments none --output css/styles.css && ls -lah css/",
     "prestart": "npm run css-build",
     "start": "eleventy --serve"
   },
@@ -36,8 +36,8 @@
     "postcss": "8.x",
     "postcss-cli": "9.x",
     "postcss-nested": "5.x",
-    "prismjs": "1.x",
-    "tailwindcss": "2.2.x"
+    "prismjs": "1.28.0",
+    "tailwindcss": "2.2.19"
   },
   "devDependencies": {
     "prettier": "1.19.x"
