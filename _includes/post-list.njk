@@ -7,7 +7,7 @@
     <li class="post-item py-2 {{ theme.posts_list_hover }} ">
         <a href="{{ post.url | url }}" class="flex justify-between">
         {% if post.data.title %}{{ post.data.title }}{% else %}<code>{{ post.url }}</code>{% endif -%}
-        <time class="post-day" datetime="{{ post.date | rssDate }}">
+        <time class="post-day" datetime="{{ post.date | fmtDate("yyyy-MM-dd HH:mm:ss") }}">
           {{ post.date | fmtDate('yyyy LLL dd') }}</time>
         </a>
     </li>

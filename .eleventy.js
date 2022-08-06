@@ -81,12 +81,8 @@ module.exports = function(config) {
   config.addPlugin(syntaxHighlight, {
     templateFormats: ['javascript', 'python', 'ruby', 'go', 'elixir', 'html', 'css', 'json'],
   })
-  config.setDataDeepMerge(true)
 
   // Universal filters
-  config.addFilter('rssDate', dateObj => {
-    return pluginRss.dateToRfc3339(new Date(dateObj))
-  })
   config.addFilter('fmtDate', (dateObj, fmt) => {
     return DateTime.fromJSDate(dateObj, { zone: 'utc' }).toFormat(fmt)
   })

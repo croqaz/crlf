@@ -22,9 +22,9 @@
   "keywords": [],
   "license": "MIT",
   "dependencies": {
-    "@11ty/eleventy": "0.12.1",
-    "@11ty/eleventy-plugin-rss": "1.1.2",
-    "@11ty/eleventy-plugin-syntaxhighlight": "4.0.0",
+    "@11ty/eleventy": "1.0.1",
+    "@11ty/eleventy-plugin-rss": "1.2.0",
+    "@11ty/eleventy-plugin-syntaxhighlight": "4.1.0",
     "@fullhuman/postcss-purgecss": "4.x",
     "autoprefixer": "10.x",
     "csso-cli": "3.x",
