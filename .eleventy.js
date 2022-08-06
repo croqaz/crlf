@@ -2,6 +2,7 @@
 const { DateTime } = require('luxon')
 
 const mdIt = require('markdown-it')
+const itAttrs = require('markdown-it-attrs')
 const taskList = require('markdown-it-task-lists')
 const htmlmin = require('html-minifier')
 
@@ -9,13 +10,13 @@ const pluginRss = require('@11ty/eleventy-plugin-rss')
 const syntaxHighlight = require('@11ty/eleventy-plugin-syntaxhighlight')
 
 function setupMarkdown() {
-  const localSrc = /^\/log|\/about|\/author|\/projects/
+  const localSrc = /^\/log|\/about|\/author|\/projects|\/mem|\.\.\//
   const md = mdIt({
     html: true,
     breaks: true,
     linkify: true,
     typographer: true,
-  }).use(taskList, { label: false })
+  }).use(taskList, { label: false }).use(itAttrs, { allowedAttributes: ['id', 'class'] })
 
   md.linkify.add('mailto:', null).set({ fuzzyIP: false, fuzzyLink: false, fuzzyEmail: false })
 
@@ -103,15 +104,15 @@ module.exports = function(config) {
     return collection
       .getFilteredByGlob('log/entries/*.md')
       .filter(c => !c.data.draft && c.data.tags)
-      // .map(c => {
-      //   const hash = crypto.createHash('sha256')
-      //   if (c.data.title) hash.update(c.data.title)
-      //   hash.update(c.template.inputContent)
-      //   const h = hash.digest('hex')
-      //   c.data.shax = h.substr(0, 8)
-      //   c.data.identicon = `#${h.substr(0, 6)}`
-      //   return c
-      // })
+    // .map(c => {
+    //   const hash = crypto.createHash('sha256')
+    //   if (c.data.title) hash.update(c.data.title)
+    //   hash.update(c.template.inputContent)
+    //   const h = hash.digest('hex')
+    //   c.data.shax = h.substr(0, 8)
+    //   c.data.identicon = `#${h.substr(0, 6)}`
+    //   return c
+    // })
   }
   const noteEntries = function(collection) {
     return entries(collection)
@@ -119,7 +120,7 @@ module.exports = function(config) {
       .map(c => {
         c.data.topic = 'notes'
         if (c.data.tags.indexOf('note') !== 0) {
-            c.data.tags.splice(0, 0, 'note')
+          c.data.tags.splice(0, 0, 'note')
         }
         return c
       })
@@ -130,7 +131,7 @@ module.exports = function(config) {
       .map(c => {
         c.data.topic = 'articles'
         if (c.data.tags.indexOf('article') !== 0) {
-            c.data.tags.splice(0, 0, 'article')
+          c.data.tags.splice(0, 0, 'article')
         }
         return c
       })

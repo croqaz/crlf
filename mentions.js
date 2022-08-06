@@ -7,14 +7,14 @@ const url = require('url')
 const fetch = require('node-fetch')
 const unionBy = require('lodash.unionby')
 
-const domain = 'crlf.link'
+const domains = ['crlf.site', 'crlf.link']
 
 const CACHE_DIR = '_data'
 const API = 'https://webmention.io/api'
 const TOKEN = process.env.WEBMENTION_IO_TOKEN
 
 async function fetchWebmentions(since, perPage = 2500) {
-  if (!domain) {
+  if (!domains || !domains.length) {
     // If we dont have a domain name, abort
     console.warn('Cannot fetch webmentions: no domain name specified in site.json')
     return false
@@ -26,17 +26,21 @@ async function fetchWebmentions(since, perPage = 2500) {
     return false
   }
 
-  let url = `${API}/mentions.jf2?domain=${domain}&token=${TOKEN}&per-page=${perPage}`
-  if (since) url += `&since=${since}`
+  let feed = {}
+  for (let domain of domains) {
+    let url = `${API}/mentions.jf2?domain=${domain}&token=${TOKEN}&per-page=${perPage}`
+    if (since) url += `&since=${since}`
 
-  const response = await fetch(url)
-  if (response.ok) {
-    const feed = await response.json()
-    console.log(`Fetched ${feed.children.length} new webmentions from ${API}`)
-    return feed
-  } else {
-    console.error('Cannot fetch webmentions: ', response)
+    const response = await fetch(url)
+    if (response.ok) {
+      const r = await response.json()
+      console.log(`Fetched ${r.children.length} new webmentions from ${API} for domain ${domain}`)
+      feed = { ...feed, ...r }
+    } else {
+      console.error('Cannot fetch webmentions: ', response)
+    }
   }
+  return feed
 }
 
 // Merge fresh webmentions with cached entries, unique per id
@@ -76,16 +80,25 @@ function writeToCache(data) {
   })
 }
 
-function processWebmentions(data, ignore = `https://${domain}/`) {
+function processWebmentions(data) {
   // url: { like-of: 0, repost-of: 0, in-reply-to: 0, from:[] }
   const mentions = {}
   for (const c of data.children) {
     const type = c['wm-property']
     const link = c['wm-target']
-    if (c.url.indexOf(ignore) > -1) {
-      continue
+
+    let ignore = false
+    for (let domain of domains) {
+      if (c.url.indexOf(domains) > -1) {
+        ignore = true
+        break
+      }
     }
+    if (ignore) continue
+
     const path = url.parse(link).path
+         .replace('/notes/', '/entries/')
+         .replace('/articles/', '/entries/')
     console.log(type, ':', path, '<-', c.url)
     if (!mentions[path]) {
       mentions[path] = { from: [] }
