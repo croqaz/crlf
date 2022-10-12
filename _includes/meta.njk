@@ -11,12 +11,18 @@
 {% endif %}
 
 <title>{{ pageTitle }}</title>
+<meta name="google-site-verification" content="Qtb666uzTeXTjf9Kxstu3zoTNNE0CGkLhK2Ra-oYPtc" />
+
 {% if site.author %}
 <meta name="author" content="{{ site.author.name }}">
 <link rel="author" href="{{ site.author.url }}">
 {% endif %}
 <link rel="canonical" href="{{ currentUrl }}">
 <link rel="publisher" href="{{ site.url }}">
+
+{% if draft === true or noIndex === true %}
+  <meta name="robots" content="noindex,nofollow,noarchive" />
+{% endif %}
 
 <!-- Favicons -->
 <link rel="shortcut icon" href="/logo/favicon.ico" />

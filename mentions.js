@@ -89,7 +89,7 @@ function processWebmentions(data) {
 
     let ignore = false
     for (let domain of domains) {
-      if (c.url.indexOf(domains) > -1) {
+      if (c.url.indexOf(domain) > -1) {
         ignore = true
         break
       }
@@ -138,7 +138,7 @@ async function main(refresh = true) {
   // write data to cache json file
   fs.writeFile(outPath, JSON.stringify(mentions, null, 2), err => {
     if (err) throw err
-    console.log(`>>> ${mentions.length} final mentions saved to ${outPath}`)
+    console.log(`>>> ${Object.keys(mentions).length} final mentions saved to ${outPath}`)
   })
 }
 

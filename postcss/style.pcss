@@ -17,11 +17,11 @@ ul {
 }
 
 ol {
-    @apply list-decimal my-2 -ml-10;
+    @apply list-decimal my-2;
 }
 
 ul.posts-list li.post-item {
-    @apply border-b border-dashed border-blue-900;
+    @apply border-b border-dashed border-indigo-900;
 }
 
 #main .tags {
@@ -47,86 +47,88 @@ hr {
     @apply border-gray-300 h-px w-full;
 }
 
+/* purgecss start ignore */
 img#webring {
     width: 26px;
     height: 26px;
-}
-
-#footer {
-    a {
-        @apply border-b border-dotted border-purple-900;
-    }
 }
 
 #remark42 {
     margin-bottom: 2rem;
 }
 
-/* purgecss start ignore */
-#article {
-    a {
-        @apply text-indigo-900 border-b border-dotted border-purple-900;
-    }
-
-    .tags a {
-        @apply border-0 border-none;
-    }
-
-    p {
-        @apply my-3;
-    }
-
-    blockquote {
-        border-left: 3px solid #ccc;
-        margin-left: -3px;
-    }
-
-    blockquote>p {
-        margin-top: -1rem;
-    }
-
-    blockquote::before{
-      content: "\201C";
-      font-size: 2.44rem;
-      font-weight: bold;
-      line-height: 1;
-      color: #ccc;
-    }
-
-    h1 {
-        font-size: 2.44rem;
-        font-weight: 600;
-        line-height: 1.125;
-        margin-bottom: 1.9rem;
-    }
-
-    h2 {
-        font-size: 1.953rem;
-        font-weight: 600;
-        line-height: 1.25;
-        margin-bottom: 1rem;
-    }
-
-    h3 {
-        font-size: 1.563em;
-        font-weight: 500;
-        line-height: 1.25;
-        margin-bottom: 0.75rem;
-    }
-
-    h4 {
-        font-size: 1.25em;
-        font-weight: 400;
-        line-height: 1.125;
-    }
-
-    section.date, section.tags, section.mentions {
-        margin-left: -3px;
-    }
+#footer a {
+    @apply border-b border-dotted border-purple-900;
 }
 
 article.photos img {
     max-height: 110vmin;
+}
+
+#article a {
+    @apply text-indigo-900 border-b border-dotted border-purple-900;
+}
+
+#article .tags a {
+    @apply border-0 border-none;
+}
+
+#article p {
+    @apply my-3;
+}
+
+#article blockquote {
+    border-left: 3px solid #ccc;
+    margin-left: -3px;
+}
+
+#article blockquote > p:first-child {
+    margin-top: -1rem;
+}
+
+#article blockquote > ul {
+    margin-left: -3px;
+}
+
+#article blockquote::before{
+    content: "\201C";
+    font-size: 2.44rem;
+    font-weight: bold;
+    line-height: 1;
+    color: #ccc;
+}
+
+#article h1 {
+    font-size: 2.44rem;
+    font-weight: 600;
+    line-height: 1.125;
+    margin-bottom: 1.9rem;
+    margin-top: 1.5rem;
+}
+
+#article h2 {
+    font-size: 1.953rem;
+    font-weight: 600;
+    line-height: 1.25;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+
+#article h3 {
+    font-size: 1.563em;
+    font-weight: 500;
+    line-height: 1.25;
+    margin-bottom: 0.75rem;
+}
+
+#article h4 {
+    font-size: 1.25em;
+    font-weight: 400;
+    line-height: 1.125;
+}
+
+#article section.date, section.tags, section.mentions {
+    margin-left: -3px;
 }
 
 /* icons8 line-awesome */
@@ -188,8 +190,6 @@ article.photos img {
   background-image: url(/icons/tags.svg);
 }
 /* purgecss end ignore */
-
-@tailwind utilities;
 
 body {
     font-family: "Inter var", system-ui, sans-serif !important;

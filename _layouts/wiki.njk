@@ -4,8 +4,114 @@ layout: base
 eleventyExcludeFromCollections: true
 ---
 <style>
-img { max-width: 128px !important; }
+#article img {
+  display: inline-block;
+  max-width: 128px !important;
+}
+#modalWrap {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 99.9%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.1);
+  opacity: 0;
+  transform: scale(0.9, 0.9);
+  transition: all 0.44s ease-in-out;
+  z-index: -1;
+}
+#modalWrap.open {
+  background-color: rgba(0,0,0,0.9);
+  opacity: 1;
+  transform: scale(.95, .95);
+  z-index: 999;
+}
+#modalImg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: block;
+  max-height: 96% !important;
+  max-width: 90%;
+}
+#modalClose {
+  position: absolute;
+  top: 10px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+#modalClose:hover, #modalClose:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
 </style>
 <article id="article" class="ml-auto mr-auto h-entry {{ topic }}" style="width:80ch">
 {{ content | safe }}
 </article>
+<div id="modalWrap">
+  <span id="modalClose">&times;</span>
+  <img id="modalImg">
+  <div id="caption"></div>
+</div>
+<script>
+function setupModal() {
+    const modal = document.getElementById('modalWrap');
+    const modalImg = document.getElementById('modalImg');
+    const wheelEvent = 'onwheel' in modal ? 'wheel' : 'mousewheel';
+    function preventDefault(ev) {
+        ev.preventDefault();
+    }
+    function disableScroll() {
+        window.addEventListener(wheelEvent, preventDefault, { passive: false });
+        window.addEventListener('touchmove', preventDefault, { passive: false });
+    }
+    function enableScroll() {
+        window.removeEventListener(wheelEvent, preventDefault, { passive: false });
+        window.removeEventListener('touchmove', preventDefault, { passive: false });
+    }
+    function closeModal() {
+        modal.classList.remove('open');
+        enableScroll();
+        modalImg.src = '';
+    }
+    modal.onclick = function (ev) {
+        if (ev.target.tagName !== 'IMG') closeModal();
+    };
+    function calcID(elem) {
+        return elem.currentSrc.split('/').slice(-1)[0].split('.')[0];
+    }
+    document.body.onkeydown = function (ev) {
+        if (ev.key === 'Escape') closeModal();
+        else if (ev.key === 'ArrowRight' || ev.key === 'ArrowLeft') {
+            let next = null;
+            const img = document.getElementById(modalImg.getAttribute('data-id'));
+            if (ev.key === 'ArrowRight') next = img.nextElementSibling;
+            else next = img.previousElementSibling;
+            if (!next) return;
+            modalImg.src = next.currentSrc;
+            next.setAttribute('id', calcID(next));
+            modalImg.setAttribute('data-id', next.id);
+        }
+    };
+    document.getElementById('article').onclick = function (ev) {
+        const tgt = ev.target;
+        if (tgt.tagName !== 'IMG') {
+            return;
+        }
+        modalImg.src = tgt.currentSrc;
+        tgt.setAttribute('id', calcID(tgt));
+        modalImg.setAttribute('data-id', tgt.id);
+        modal.classList.add('open');
+        disableScroll();
+    };
+}
+window.addEventListener('load', function () {
+    setupModal();
+});
+</script>

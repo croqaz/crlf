@@ -3,12 +3,9 @@ const colors = require('tailwindcss/colors')
 module.exports = {
   theme: {
     screens: {
-      sm: '640px',
-      // => @media (min-width: 640px) { ... }
-      md: '768px',
-      // => @media (min-width: 768px) { ... }
-      lg: '1024px',
-      // => @media (min-width: 1024px) { ... }
+      sm: '640px', // => @media (min-width: 640px) { ... }
+      md: '768px', // => @media (min-width: 768px) { ... }
+      // lg: '1024px' // => @media (min-width: 1024px) { ... }
     },
     colors: {
       // Ignoring yellow, green, teal, pink
@@ -17,7 +14,6 @@ module.exports = {
       gray: colors.gray,
       red: colors.red,
       orange: colors.orange,
-      blue: colors.blue,
       indigo: colors.indigo,
       purple: colors.purple,
     },
@@ -33,29 +29,24 @@ module.exports = {
     },
   },
   corePlugins: {
+    animation: false,
     clear: false,
     cursor: false,
     float: false,
+    objectFit: false,
+    objectPosition: false,
     visibility: false,
+    willChange: false,
     zIndex: false,
   },
-  darkMode: false,
-  purge: {
-    enabled: true,
-    content: [
-      './_includes/*.njk',
-      './_layouts/*.njk',
-      './_pages/*.njk',
-      './log/*.md',
-      './log/entries/*.md',
-      './log/photos/*.md',
-      './_data/theme.json',
-    ],
-    options: {
-      fontFace: true,
-      keyframes: true,
-      safelist: ['h[1-5r]', 'blockquote', 'pre', 'code', 'ico-[a-z]'],
-    },
-    preserveHtmlElements: false,
-  },
+  content: [
+    './_includes/*.njk',
+    './_layouts/*.njk',
+    './_pages/t*.njk',
+    './log/*.md',
+    './log/entries/*.md',
+    './log/photos/[i2]*.md',
+    './_data/theme.json'
+  ],
+  safelist: ['hr', 'ico-[a-z]'],
 }
