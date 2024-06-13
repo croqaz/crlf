@@ -58,9 +58,10 @@ function setupMarkdown() {
 function memWikiTransform(content, outputPath) {
   const path = this.page.outputPath || ''
   if (/\/mem\//.test(path) && path.endsWith('.html')) {
-    // Replace links like [Computers](./computer)
-    // with [Computers](/mem/computer)
-    let fixed = content.replace(/(\[.+?\])\(\.(\/.+?)\)/g, '$1(/mem$2)')
+    // Replace links like href="./computer" -with-> href="/mem/computer"
+    let fixed = content.replace(/a href="\.\/([a-zA-Z-]+?)"/g, 'a href="/mem/$1"')
+    // Replace images like href="./pic.jpg" -with-> href="../pic.jpg"
+    fixed = fixed.replace(/img src="\.\/(img\/.+?)"/g, 'img src="../$1"')
     return fixed
   }
   return content
