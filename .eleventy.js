@@ -9,7 +9,7 @@ const pluginRss = require('@11ty/eleventy-plugin-rss')
 const syntaxHighlight = require('@11ty/eleventy-plugin-syntaxhighlight')
 
 function setupMarkdown() {
-  const localSrc = /^\/log|\/about|\/author|\/projects|\/mem|\.\.\//
+  const localSrc = /^\/log|\/about|\/author|\/projects|\/mem|^\.+\//
   const md = mdIt({
     html: true,
     breaks: true,
@@ -179,6 +179,7 @@ module.exports = function(config) {
   config.addPassthroughCopy('icons')
   config.addPassthroughCopy('logo')
   config.addPassthroughCopy('log/img')
+  config.addPassthroughCopy('mem/img')
 
   // Don't ignore the same files ignored in the git repo
   config.setUseGitIgnore(false)
