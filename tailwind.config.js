@@ -46,7 +46,7 @@ module.exports = {
     './log/*.md',
     './log/entries/*.md',
     './log/photos/[i2]*.md',
-    './_data/theme.json'
+    './_data/theme.json',
   ],
   safelist: ['hr', 'ico-[a-z]'],
 }

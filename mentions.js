@@ -96,9 +96,10 @@ function processWebmentions(data) {
     }
     if (ignore) continue
 
-    const path = url.parse(link).path
-         .replace('/notes/', '/entries/')
-         .replace('/articles/', '/entries/')
+    const path = url
+      .parse(link)
+      .path.replace('/notes/', '/entries/')
+      .replace('/articles/', '/entries/')
     console.log(type, ':', path, '<-', c.url)
     if (!mentions[path]) {
       mentions[path] = { from: [] }
