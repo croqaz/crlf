@@ -14,7 +14,7 @@
     "url": "https://crlf.link/feed.xml"
   },
   "copyright": {
-    "from": "2007-2022",
+    "from": "2007-2025",
     "name": "Cristi Constantin"
   },
   "license": {
@@ -32,6 +32,6 @@
       "twitter.com/croqaz": "https://twitter.com/croqaz"
     }
   },
-  "analytics_site": "https://stat.crlf.link/ingress/4b5f890a-6f2c-40fe-8080-928c84cbc945",
+  "analytics_site": "https://stat.crlf.link/ingress/bc902359-7cb4-40e3-8c70-8e78c18e0834",
   "comments_site": "https://comment.crlf.link"
 }

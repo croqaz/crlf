@@ -4,7 +4,7 @@
 //
 const fs = require('fs')
 const url = require('url')
-const fetch = require('node-fetch')
+const nodeFetch = require('node-fetch')
 const unionBy = require('lodash.unionby')
 
 const domains = ['crlf.site', 'crlf.link']
@@ -31,7 +31,7 @@ async function fetchWebmentions(since, perPage = 2500) {
     let url = `${API}/mentions.jf2?domain=${domain}&token=${TOKEN}&per-page=${perPage}`
     if (since) url += `&since=${since}`
 
-    const response = await fetch(url)
+    const response = await nodeFetch(url)
     if (response.ok) {
       const r = await response.json()
       console.log(`Fetched ${r.children.length} new webmentions from ${API} for domain ${domain}`)
