@@ -55,18 +55,6 @@ function setupMarkdown() {
   return md
 }
 
-function memWikiTransform(content, outputPath) {
-  const path = this.page.outputPath || ''
-  if (/\/mem\//.test(path) && path.endsWith('.html')) {
-    // Replace links like href="./computer" -with-> href="/mem/computer"
-    let fixed = content.replace(/a href="\.\/([a-zA-Z-]+?)"/g, 'a href="/mem/$1"')
-    // Replace images like href="./pic.jpg" -with-> href="../pic.jpg"
-    fixed = fixed.replace(/img src="\.\/(img\/.+?)"/g, 'img src="../$1"')
-    return fixed
-  }
-  return content
-}
-
 function htmlMinTransform(content) {
   if ((this.page.outputPath || '').endsWith('.html')) {
     const minified = htmlmin.minify(content, {
@@ -183,7 +171,6 @@ module.exports = function(config) {
   config.setLibrary('md', setupMarkdown())
 
   // Transforms
-  config.addTransform('memwiki', memWikiTransform)
   config.addTransform('htmlmin', htmlMinTransform)
 
   // Manual passthrough copy
@@ -193,7 +180,6 @@ module.exports = function(config) {
   config.addPassthroughCopy('icons')
   config.addPassthroughCopy('logo')
   config.addPassthroughCopy('log/img')
-  config.addPassthroughCopy('mem/img')
 
   // Don't ignore the same files ignored in the git repo
   config.setUseGitIgnore(false)
