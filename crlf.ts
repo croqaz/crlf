@@ -129,6 +129,10 @@ export function title(text: string, _a: Params, meta: Runtime): undefined {
     console.warn("No text provided for the title tag.");
     return;
   }
+  if (!meta.file.fname?.endsWith(".md")) {
+    // console.warn("Title tag can only be used in MD files.");
+    return;
+  }
 
   const shortFn = path.basename(meta.file.fname!).toLowerCase().split(".")[0];
   console.log("Adding title text:", shortFn, "=", text);
@@ -142,31 +146,37 @@ export function title(text: string, _a: Params, meta: Runtime): undefined {
   // return "";
 }
 
-export function link(text: string, args: Params, meta: Runtime): undefined {
+export function link(text: string, _a: Params, meta: Runtime): undefined {
   /*
    * 2✂︎f tag that defines links between memos in MEM.
    * The link doesn't return anything, just caches the relationship.
+   * This could also show up in regular HTML, so be careful!
    *
    * Example:
    * {link id=whatever} [Whatever](./whatever) {/link}
    */
-  if (!args.id) {
+  const params = meta.node.params || {};
+  if (!meta.file.fname?.endsWith(".md")) {
+    // console.warn("Link tag can only be used in MD files.");
+    return;
+  }
+  if (!params.id) {
     const m = text.match(/\(\.\/(.+?)\)/);
     if (m && m[1]) {
-      args.id = m[1];
+      params.id = m[1];
     } else {
-      console.warn("No link provided in text or ID! Skipping link.");
+      // console.warn("No link provided in text or ID! Skipping link.");
       return;
     }
   }
 
-  args.id = args.id.toLowerCase();
+  const id = params.id.toLowerCase();
   // Must be in title case
-  if (!args.text) args.text = toTitleCase(args.id);
+  if (!params.text) params.text = toTitleCase(id);
 
   // BROKEN because of lowercase
   const shortFn = path.basename(meta.file.fname!).toLowerCase().split(".")[0];
-  console.log("Adding link:", shortFn, "->", args.id);
+  console.log("Adding link:", shortFn, "->", id);
 
   let dirLinks = new Set<string>();
   try {
@@ -176,15 +186,15 @@ export function link(text: string, args: Params, meta: Runtime): undefined {
   }
   let bckLinks = new Set<string>();
   try {
-    bckLinks = new Set<string>(diskCache.getCache("bck_links", args.id) || []);
+    bckLinks = new Set<string>(diskCache.getCache("bck_links", id) || []);
   } catch (err: any) {
     console.error("Error reading bck_links cache:", err.message);
   }
 
-  dirLinks.add(args.id);
+  dirLinks.add(id);
   bckLinks.add(shortFn);
   diskCache.setCache("dir_links", shortFn, Array.from(dirLinks), TTL);
-  diskCache.setCache("bck_links", args.id, Array.from(bckLinks), TTL);
+  diskCache.setCache("bck_links", id, Array.from(bckLinks), TTL);
 }
 
 export function backlinks(_t: string, args: Params, meta: Runtime): string {
@@ -238,7 +248,7 @@ export async function blog(
   _t: string,
   _a: Params,
   meta: Runtime,
-): Promise<any> {
+): Promise<undefined> {
   // The text content is in the children nodes
   const text = meta.node
     .children!.filter((n) => n.rawText && n.rawText.trim() !== "")
@@ -255,18 +265,20 @@ export async function blog(
   blog.id = id;
   blog.layout = "post";
   blog.url = `/log/entries/${key}/`;
+  blog.date = ctx.date;
+  blog.title = ctx.title;
   blog.tags = ctx.tags || [];
   blog.draft = ctx.draft || false;
   blog.topic = isArticle({ ...ctx, text }) ? "articles" : "notes";
   blog.topicTitle = toTitleCase(blog.topic);
-  blog.title = ctx.title || key;
   blog.isoDate = new Date(ctx.date)
     .toISOString()
     .replace("T", " ")
     .replace(/\.000Z$/, "");
-  blog.dtListed = formatDate(new Date(ctx.date), "yyyy LLL dd");
-  blog.dtPublished = formatDate(new Date(ctx.date), "yyyy LLL dd, ccc");
   blog.readingTime = getReadingTime(text);
+  blog.dtListed = formatDate(new Date(blog.date), "yyyy LLL dd");
+  blog.dtPublished = formatDate(new Date(blog.date), "yyyy LLL dd, ccc");
+  // Cache into BLOGS!
   diskCache.setCache("blogs", key, blog, TTL);
 
   const engine = await Runtime.fromFile(
@@ -302,14 +314,14 @@ export async function blog(
 
   fs.mkdirSync(`output/${blog.url}`, { recursive: true });
   console.log("Writing blog:", blog.url, "Title:", blog.title);
-  fs.writeFileSync(`output/log/entries/${key}/index.html`, minified, "utf-8");
+  fs.writeFileSync(`output/${blog.url}/index.html`, minified, "utf-8");
 }
 
 export async function memo(
   text: string,
   _a: Params,
   meta: Runtime,
-): Promise<any> {
+): Promise<undefined> {
   /**
    * 2✂︎f tag used to generate a single MEMO page.
    */
@@ -366,18 +378,161 @@ export async function photo(
   _t: string,
   args: Params,
   meta: Runtime,
-): Promise<any> {
+): Promise<undefined> {
   /**
    * 2✂︎f tag used to define and generate a photo page.
    */
-  return;
+  if (!args.date || !args.title) {
+    console.warn("Photo tag requires date and title! Skipping!");
+    return;
+  }
+  if (!(args.image || args.images)) {
+    console.warn("Photo tag requires image or images parameters! Skipping!");
+    return;
+  }
+
+  const key =
+    `${args.date.slice(2).replaceAll("-", "")}-${args.title.replaceAll(
+      " ",
+      "-",
+    )}`.toLowerCase();
+
+  // TODO :: load old values from cache if exists?
+  const blog: Params = {};
+  blog.id = key;
+  blog.layout = "post";
+  blog.url = `/log/photos/${key}/`;
+  blog.topic = "photos";
+  blog.date = args.date;
+  blog.title = args.title;
+  if (args.text) blog.text = args.text;
+  blog.topicTitle = toTitleCase(blog.topic);
+  blog.isoDate = new Date(args.date)
+    .toISOString()
+    .replace("T", " ")
+    .replace(/\.000Z$/, "");
+  blog.dtListed = formatDate(new Date(blog.date), "yyyy LLL dd");
+  blog.dtPublished = formatDate(new Date(blog.date), "yyyy LLL dd, ccc");
+  if (args.image) blog.image = args.image;
+  if (args.images && Array.isArray(args.images)) blog.images = args.images;
+  // Cache into BLOGS!
+  diskCache.setCache("blogs", key, blog, TTL);
+
+  const engine = await Runtime.fromFile(
+    // Blog post layout
+    `tmpl/${blog.layout}.html`,
+    meta.customTags,
+    meta.config,
+    meta.memoCache,
+  );
+
+  const content = args.images
+    ? args.images
+        .map(
+          (img: string) =>
+            `<p><img src="/log/img/photos/${img}" alt="${args.text}" title="${args.title}"></p>`,
+        )
+        .join("\n")
+    : `<img src="/log/img/photos/${args.image}" alt="${args.text}" title="${args.title}">`;
+  const ctx = { ...args, ...blog, content };
+  const tmpl = await engine.evaluateAll(ctx);
+  let html = new TemplateEngine().render(tmpl, ctx);
+
+  fs.mkdirSync(`output/${blog.url}`, { recursive: true });
+  console.log("Writing photo:", blog.url);
+  fs.writeFileSync(`output/${blog.url}/index.html`, html, "utf-8");
+}
+
+export async function img(
+  _t: string,
+  args: Params,
+  _m: Runtime,
+): Promise<undefined> {
+  /**
+   * 2✂︎f tag used to enable img-DB generated image tags.
+   */
+  if (
+    !args["data-pth"] ||
+    !args["data-format"] ||
+    !args["data-mode"] ||
+    !args.src
+  ) {
+    return;
+  }
+
+  const pth = args["data-pth"].split("/").at(-1);
+  const info = Object.values(
+    JSON.parse(fs.readFileSync("cache/blogs.json", "utf8")),
+  )
+    .map((e: any) => e.value)
+    .filter(
+      (e: Params) =>
+        e.topic === "photos" &&
+        (e.image === pth || (e.images && e.images.includes(pth))),
+    )
+    .at(0);
+  for (const k of Object.keys(args)) {
+    if (k.startsWith("data-") && k.endsWith("hash")) info[k] = args[k];
+  }
+  if (args["data-top-colors"]) {
+    info["data-top-colors"] = args["data-top-colors"];
+  }
+  console.log("Caching img-DB:", info);
+  info.src = args.src;
+  // Cache into BLOGS!
+  diskCache.setCache("blogs", info.id, info, TTL);
+
+  console.log("Cached img-DB info for:", pth);
+}
+
+export function tags(_t: string, _a: Params, _m: Runtime): string {
+  /**
+   * 2✂︎f tag used to generate the full list of tags.
+   */
+  const blogs = Object.values(
+    JSON.parse(fs.readFileSync("cache/blogs.json", "utf8")),
+  )
+    .map((e: any) => e.value)
+    .sort((a: any, b: any) => (a.date < b.date ? 1 : -1));
+  console.log(`Loaded all blogs:`, blogs.length);
+
+  const unsortedTags: Record<string, number> = {};
+  let tags = "";
+  blogs.forEach((p: Params) => {
+    if (!p.tags) return;
+    for (const t of p.tags) {
+      if (
+        !t ||
+        t === "article" ||
+        t === "articles" ||
+        t === "entries" ||
+        t === "entry" ||
+        t === "note" ||
+        t === "notes"
+      ) {
+        continue;
+      }
+      if (!unsortedTags[t]) {
+        unsortedTags[t] = 1;
+      } else {
+        unsortedTags[t] += 1;
+      }
+    }
+  });
+  for (const t of Object.keys(unsortedTags).sort(
+    (a, b) => unsortedTags[b] - unsortedTags[a],
+  )) {
+    tags += `  <postList id=tag tag="${t}" count=${unsortedTags[t]}/>\n`;
+  }
+  console.log("Generated tags list:", tags);
+  return "\n  " + tags.trim() + "\n";
 }
 
 export async function postList(
   _t: string,
   args: Params,
   meta: Runtime,
-): Promise<any> {
+): Promise<undefined> {
   /**
    * 2✂︎f tag used to generate a listing of blog posts.
    */
@@ -385,10 +540,11 @@ export async function postList(
     args.tmpl ? `tmpl/${args.tmpl}.html` : "tmpl/list.html",
     meta.customTags,
     meta.config,
+    meta.memoCache,
   );
-  engine.memoCache = meta.memoCache;
+
   const ctx = structuredClone(args);
-  ctx.layout = "list";
+  ctx.layout = args.tmpl ? args.tmpl : "list";
   ctx.url = ("/" + (args.id === "index" ? "" : args.id) + "/").replaceAll(
     "//",
     "/",
@@ -398,16 +554,39 @@ export async function postList(
   }
   if (args.id === "articles" || args.id === "notes" || args.id === "photos") {
     ctx.ico = args.blog.topics[args.id];
+  } else if (args.id === "tag") {
+    ctx.title = `Tagged "${args.tag}"`;
+    ctx.url = `/tags/${args.tag}/`;
   }
 
-  ctx.posts = Object.values(JSON.parse(fs.readFileSync("blogs.json", "utf8")))
+  ctx.posts = Object.values(
+    JSON.parse(fs.readFileSync("cache/blogs.json", "utf8")),
+  )
     .map((e: any) => e.value)
-    .sort((a, b) => (a.isoDate < b.isoDate ? 1 : -1));
+    .sort((a: any, b: any) => (a.date < b.date ? 1 : -1));
+  console.log(`Total ${args.id} found:`, ctx.posts.length);
 
-  {
+  if (args.id === "index") {
+    ctx.posts = ctx.posts.slice(0, 6);
+  } else if (
+    args.id === "articles" ||
+    args.id === "notes" ||
+    args.id === "photos"
+  ) {
+    ctx.posts = ctx.posts.filter(
+      (p: Params) => !p.draft && p.topic === args.id,
+    );
+  } else if (args.id === "tag") {
+    ctx.posts = ctx.posts.filter(
+      (p: Params) => !p.draft && p.tags && p.tags.includes(args.tag),
+    );
+  }
+
+  if (args.tmpl === "topic") {
     const unsortedTags: Record<string, number> = {};
     const sorted: Record<string, number> = {};
     ctx.posts.forEach((p: Params) => {
+      if (!p.tags) return;
       for (const t of p.tags) {
         if (
           t === "entries" ||
@@ -433,19 +612,6 @@ export async function postList(
     ctx.tags = sorted;
   }
 
-  if (args.id === "index") {
-    ctx.posts = ctx.posts.slice(0, 6);
-  } else if (args.id === "articles") {
-    ctx.posts = ctx.posts.filter(
-      (p: Params) => !p.draft && p.topic === "articles",
-    );
-  } else if (args.id === "notes") {
-    ctx.posts = ctx.posts.filter(
-      (p: Params) => !p.draft && p.topic === "notes",
-    );
-  }
-  // console.log("Generating post list for:", ctx.url, "with", ctx);
-
   const tmpl = await engine.evaluateAll(ctx);
   let html = new TemplateEngine().render(tmpl, ctx);
   // Fix and replace stuff
@@ -454,4 +620,78 @@ export async function postList(
 
   fs.mkdirSync(`output/${ctx.url}/`, { recursive: true });
   fs.writeFileSync(`output/${ctx.url}/index.html`, html, "utf-8");
+}
+
+export async function feedXml(
+  _t: string,
+  _a: Params,
+  meta: Runtime,
+): Promise<undefined> {
+  /**
+   * 2✂︎f tag used to generate an Atom feed XML.
+   */
+  const engine = await Runtime.fromFile(
+    "tmpl/feed.xml",
+    meta.customTags,
+    meta.config,
+    meta.memoCache,
+  );
+
+  const blog: Record<string, any> = Bun.TOML.parse(
+    fs.readFileSync("data/blog.toml", "utf-8"),
+  );
+  const recent = Object.values(
+    JSON.parse(fs.readFileSync("cache/blogs.json", "utf8")),
+  )
+    .map((e: any) => {
+      e.value.absoluteUrl = `${blog.url}${e.value.url}`;
+      return e.value;
+    })
+    .sort((a: any, b: any) => (a.date < b.date ? 1 : -1));
+  const ctx = { blog, recent: recent.slice(0, 8) };
+
+  const tmpl = await engine.evaluateAll(ctx);
+  const xml = new TemplateEngine().render(tmpl, ctx);
+  fs.writeFileSync("output/feed.xml", xml, "utf-8");
+}
+
+export async function siteXml(
+  _t: string,
+  _a: Params,
+  meta: Runtime,
+): Promise<undefined> {
+  /**
+   * 2✂︎f tag used to generate an Atom feed XML.
+   */
+  const engine = await Runtime.fromFile(
+    "tmpl/sitemap.xml",
+    meta.customTags,
+    meta.config,
+    meta.memoCache,
+  );
+
+  const blog: Record<string, any> = Bun.TOML.parse(
+    fs.readFileSync("data/blog.toml", "utf-8"),
+  );
+  const pages = Object.values(
+    JSON.parse(fs.readFileSync("cache/blogs.json", "utf8")),
+  )
+    .map((e: any) => {
+      e.value.absoluteUrl = `${blog.url}${e.value.url}`;
+      return e.value;
+    })
+    .sort((a: any, b: any) => (a.date < b.date ? 1 : -1));
+  const date = new Date().toISOString().split("T")[0];
+  pages.push({ date, absoluteUrl: `${blog.url}/articles/` });
+  pages.push({ date, absoluteUrl: `${blog.url}/notes/` });
+  pages.push({ date, absoluteUrl: `${blog.url}/photos/` });
+  pages.push({ date, absoluteUrl: `${blog.url}/topics/` });
+  pages.push({ date, absoluteUrl: `${blog.url}/about/` });
+  pages.push({ date, absoluteUrl: `${blog.url}/author/` });
+  pages.push({ date, absoluteUrl: `${blog.url}/projects/` });
+  const ctx = { blog, pages };
+
+  const tmpl = await engine.evaluateAll(ctx);
+  const xml = new TemplateEngine().render(tmpl, ctx);
+  fs.writeFileSync("output/sitemap.xml", xml, "utf-8");
 }
