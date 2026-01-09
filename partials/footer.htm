@@ -1,0 +1,17 @@
+<footer id="footer" role="contentinfo" class="{{ theme.footer_bg }} text-center shadow-md p-2 md:p-4 w-full -mt-px">
+  {% if url === '/author/' %}
+  <div>
+  {% else %}
+  <div class="h-card">
+  {% endif %}
+    <p class="text-sm md:text-base leading-relaxed {{ theme.footer_1st_color }}">
+      &copy; {{ blog.copyright.from }}
+      <a rel="me" class="p-name u-url" href="/author/">{{ blog.copyright.name }}</a>.
+    </p>
+    <p class="text-xs md:text-sm leading-relaxed {{ theme.footer_2nd_color }}">
+      Except where otherwise noted, the text content on this site is licensed under
+      <a rel="license noopener" href="{{ blog.license.link }}" target="_blank" title="{{ blog.license.title }}">
+        {{ blog.license.name }}</a>.
+    </p>
+  </div>
+</footer>

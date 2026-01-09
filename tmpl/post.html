@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <partial src="partials/meta.htm"></partial>
+    <partial src="partials/style.htm"></partial>
+  </head>
+  <body class="flex flex-col {{ theme.body_bg }}">
+    <partial src="partials/header.htm"></partial>
+    <section class="flex mt-4 mb-6 px-6" style="flex:1 0 auto">
+
+    <article id="article" class="ml-auto mr-auto h-entry {{ topic }}"
+      style="{% if topic === 'photos' %}max-width:{{ theme.photo_width }}{% else %}width:{{ theme.main_width }}{% endif %}">
+
+      {% if title %}
+        <h1 class="{{ theme.post_h1_color }} p-name">{{ title }}</h1>
+      {% endif %}
+      {% if excerpt %}
+        <h3 class="{{ theme.post_h3_color }} p-summary">{{ excerpt }}</h3>
+      {% endif %}
+
+      <section class="date text-gray-800 pt-2 entry-meta grid grid-cols-2">
+        <span title="Created at">
+          <span class="ico ico-calendar"></span>
+          <time class="dt-published" datetime="{{ isoDate }}">
+            {{ dtPublished }}</time>
+        </span>
+        {% if source %}
+          <span class="text-right mr-1" title="First posted on/ Original source">
+          <span class="ico ico-box"></span> {{ source }}</span>
+        {% endif %}
+      </section>
+
+      {% if topic === 'articles' %}
+      <section class="text-gray-800 pt-2 -m-0.5" title="Reading time">
+        <span class="ico ico-clock"></span> <span>{{ readingTime }} min</span>
+      </section>
+      {% endif %}
+
+      <section class="e-content">
+        {{ content }}
+      </section>
+
+      <section class="tags text-sm leading-loose py-2">
+        {% if tags %}
+        <span title="Tagged as"><span class="ico ico-tags"></span></span>
+        {% endif %}
+        <span class="{{ theme.tag_bg }} rounded font-medium px-2 py-1 my-1 mr-1 p-category">
+          <a href="/{{ topic }}">@{{ topic }}</a>
+        </span>
+        {% for tag in tags %}
+          <span class="{{ theme.tag_bg }} rounded px-2 py-1 my-1 mr-1">
+            <a href="/tags/{{ tag }}">#{{ tag }}</a>
+          </span>
+        {% endfor %}
+      </section>
+
+    </article>
+    </section>
+
+    {% if mentions[url] %}
+    <section class="mentions text-sm font-medium leading-loose py-2 text-gray-800">
+      <span title="Webmentions"><span class="ico ico-comments"></span> </span>
+    </section>
+    {% endif %}
+
+    {% if hasCode %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/styles/zenburn.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js" integrity="sha512-tHQeqtcNWlZtEh8As/4MmZ5qpy0wj04svWFK7MIzLmUVIzaHXS8eod9OmHxyBL1UET5Rchvw7Ih4ZDv5JojZww==" crossorigin="anonymous"></script>
+    <script>hljs.initHighlightingOnLoad()</script>
+    {% endif %}
+
+    <partial src="partials/comments.htm"></partial>
+    <partial src="partials/footer.htm"></partial>
+    <noscript><img src="{{ blog.analytics_url }}/pixel.gif"></noscript>
+    <script src="{{ blog.analytics_url }}/script.js" defer></script>
+  </body>
+</html>

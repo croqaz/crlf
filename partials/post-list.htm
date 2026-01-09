@@ -1,0 +1,19 @@
+<main id="main" class="ml-auto mr-auto" style="width:{{ theme.main_width }}">
+<h3 class="text-2xl mt-3">{{ title }}{% if ico %} <span class="ico ico-{{ ico }}"></span>{% endif %}</h3>
+<div class="flex my-2">
+  <ul class="posts-list flex-grow {{ theme.posts_list_color }} text-sm md:text-base">
+  {% for post in posts %}
+  {% if post.draft %}
+  <!-- ignore -->
+  {% else %}
+  <li class="post-item py-2 {{ theme.posts_list_hover }} ">
+    <a href="{{ post.url }}" class="flex justify-between">
+      {{ post.title }}
+      <time class="post-day" datetime="{{ post.isoDate }}">{{ post.dtListed }}</time>
+    </a>
+  </li>
+  {% endif %}
+  {% endfor %}
+  </ul>
+</div>
+</main>

@@ -1,0 +1,21 @@
+<hr />
+
+<section class="flex mt-4" style="flex:1 0 auto">
+  <div class="w-full ml-auto mr-auto" id="remark42" style="max-width:{{ theme.main_width }}"></div>
+</section>
+
+<script defer>
+  remark_config = {
+    host: '{{ blog.comments_url }}',
+    url: '{{ url }}',
+    site_id: 'crlf',
+    simple_view: true,
+    no_footer: true,
+  };
+  (function (d) {
+    const s = d.createElement('script')
+    s.src = remark_config.host + '/web/embed.js'
+    s.defer = true;
+    (d.head || d.body).appendChild(s)
+  })(document);
+</script>

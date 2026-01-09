@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <partial src="partials/meta.htm"></partial>
+    <partial src="partials/style.htm"></partial>
+  </head>
+  <body class="flex flex-col {{ theme.body_bg }}">
+    <partial src="partials/header.htm"></partial>
+    <section class="flex mt-4 mb-6 px-6" style="flex:1 0 auto">
+      <partial src="partials/post-list.htm"></partial>
+    </section>
+    <partial src="partials/footer.htm"></partial>
+    <noscript><img src="{{ blog.analytics_url }}/pixel.gif"></noscript>
+    <script src="{{ blog.analytics_url }}/script.js" defer></script>
+  </body>
+</html>

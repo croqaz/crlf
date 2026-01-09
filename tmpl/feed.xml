@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+	<title>{{ blog.title }}</title>
+	<subtitle>{{ blog.description }}</subtitle>
+	<link href="{{ blog.feed.url }}" rel="self" type="application/atom+xml"/>
+	<link href="{{ blog.url }}" rel="alternate" type="text/html"/>
+	<id>{{ blog.feed.url }}</id>
+	<author>
+		<name>{{ blog.author.name }}</name>
+		<uri>{{ blog.author.url }}</uri>
+	</author>
+
+	{% for post in recent %}<entry>
+		<id>{{ post.url }}</id>
+		<title>{{ post.title }}</title>
+		<category term="{{ post.topic }}"/>
+		<link href="{{ post.absoluteUrl }}"/>
+		<published>{{ post.isoDate }}</published>
+	</entry>
+	{% endfor %}
+</feed>

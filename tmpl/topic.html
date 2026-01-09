@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <partial src="partials/meta.htm"></partial>
+    <partial src="partials/style.htm"></partial>
+  </head>
+  <body class="flex flex-col {{ theme.body_bg }}">
+    <partial src="partials/header.htm"></partial>
+    <section class="flex mt-4 mb-6 px-6" style="flex:1 0 auto">
+      <main id="main" class="ml-auto mr-auto" style="width:{{ theme.main_width }}">
+        {% if id === "topics" %}
+        <h3 class="text-2xl mt-1">§ Topics</h3>
+        <ul class="mt-4">
+          {% for name in blog.topics %}
+          <li class="mb-2">
+          <a href="/{{ name }}/">
+            <span class="w-6 {{ theme.tag_bg }} rounded px-2 py-1">
+            {{ name }} <span class="ico ico-{{ blog.topics[name] }}"></span></span>
+          </a>
+          </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+        <h3 class="text-2xl my-3">§ Tags</h3>
+        <div class="tags text-sm">
+        {% for tag in tags %}
+          <span class="tag rounded {{ theme.posts_list_color }} {{ theme.tag_bg }} px-2 py-1 my-1">
+          <a href="/tags/{{ tag }}">{{ tag }}<sup class="ml-1 text-gray-600">{{ tags[tag] }}</sup></a>
+          </span> &nbsp;
+        {% endfor %}
+        </div>
+      </main>
+    </section>
+    <partial src="partials/footer.htm"></partial>
+    <noscript><img src="{{ blog.analytics_url }}/pixel.gif"></noscript>
+    <script src="{{ blog.analytics_url }}/script.js" defer></script>
+  </body>
+</html>

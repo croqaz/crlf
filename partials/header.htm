@@ -1,0 +1,54 @@
+<header class="{{ theme.header_bg }}">
+  {% if url === '/' %}
+  <section role="banner" class="flex content-center items-center" style="min-height:{{ theme.banner_height }}">
+    <div class="flex-grow text-center has-special-font pb-2">
+      <h1 class="text-7xl {{ theme.header_1st_color }}">{{ blog.title }}</h1>
+      <h3 class="text-lg {{ theme.header_2nd_color }}">{{ blog.description }}</h3>
+    </div>
+  </section>
+  {% endif %}
+
+<nav role="navigation" class="flex shadow-md items-center {{ theme.nav_bg }} p-1 md:p-2">
+  <div class="w-full flex flex-grow items-center text-sm md:text-base w-auto">
+    <div class="flex-grow leading-none {{ theme.nav_link_color }}">
+    {% if topicTitle %}
+      <a href="/{{ topic }}/" class="inline-block rounded capitalize px-4 py-2 {{ theme.nav_link_hover }}">
+        {{ topicTitle }}
+      </a>
+    {% elif layout === 'wiki' %}
+      <a href="/mem/" class="inline-block rounded px-4 py-2 {{ theme.nav_link_hover }}">
+        MEM
+      </a>
+    {% else %}
+      <a href="/articles/" class="inline-block rounded px-4 py-2 {{ theme.nav_link_hover }}">
+        Articles
+      </a>
+      <a href="/notes/" class="inline-block rounded px-4 py-2 {{ theme.nav_link_hover }}">
+        Notes
+      </a>
+      <a href="/photos/" class="hidden md:inline-block rounded px-4 py-2 {{ theme.nav_link_hover }}">
+        Photos
+      </a>
+    {% endif %}
+
+      <a href="/topics/" title="Categories / Tags"
+        class="inline-block px-2 py-2 rounded border-l border-r font-medium text-orange-200
+          hover:text-terra {{ theme.nav_link_hover }}">
+        &;&;
+      </a>
+      <a href="/about/" class="inline-block rounded px-4 py-2 {{ theme.nav_link_hover }}">
+        About
+      </a>
+    </div>
+
+    {% if layout !== 'wiki' %}
+    <a href='https://webring.xxiivv.com/#random' class="rounded px-2 py-1 {{ theme.nav_link_hover }}"
+        target='_blank' rel="noopener noreferrer">
+      <img id="webring" src='https://webring.xxiivv.com/icon.white.svg'/>
+    </a>
+    <a href="/feed.xml" class="rounded leading-none px-2 py-2 text-white {{ theme.nav_link_hover }}">
+      RSS</a>
+    {% endif %}
+  </div>
+</nav>
+</header>
