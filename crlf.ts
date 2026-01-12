@@ -291,6 +291,7 @@ export async function blog(
   blog.draft = ctx.draft || false;
   blog.topic = isArticle({ ...ctx, text }) ? "articles" : "notes";
   blog.topicTitle = toTitleCase(blog.topic);
+  if (ctx.draft) blog.draft = true;
   blog.isoDate = new Date(ctx.date)
     .toISOString()
     .replace("T", " ")
@@ -586,7 +587,10 @@ export async function postList(
     ctx.posts = ctx.posts.filter(
       (p: Params) => !p.draft && p.topic === args.id,
     );
-  } else if (args.id === "tag") {
+  } else if (args.id === "drafts") {
+    ctx.posts = ctx.posts.filter((p: Params) => p.draft);
+  } else if (args.id === "tag" && args.tag) {
+    // individual tag page
     ctx.posts = ctx.posts.filter(
       (p: Params) => !p.draft && p.tags && p.tags.includes(args.tag),
     );
