@@ -124,14 +124,8 @@ export function partial(_t: string, args: Params, meta: Runtime): string {
   }
   const text = fs.readFileSync(src, "utf-8");
   // Inject page variables
-  const shortFn = path.basename(meta.file.fname!).toLowerCase().split(".")[0];
-  return (
-    "\n" +
-    new TemplateEngine()
-      .render(text, { ...args, partial: `${shortFn}.html` })
-      .trim() +
-    "\n"
-  );
+  // const shortFn = path.basename(meta.file.fname!).toLowerCase().split(".")[0];
+  return "\n" + new TemplateEngine().render(text, { ...args }).trim() + "\n";
 }
 
 export function title(text: string, _a: Params, meta: Runtime): undefined {
@@ -264,6 +258,51 @@ function escapeText(text: string): string {
     .replace(/'/g, "&#39;");
 }
 
+export async function plainRender(
+  _t: string,
+  args: Params,
+  meta: Runtime,
+): Promise<undefined> {
+  /**
+   * 2✂︎f tag used to render a plain HTML page.
+   */
+  if (!args.in) {
+    console.warn("plainRender tag requires 'in' parameter! Skipping!");
+    return;
+  }
+  if (!args.out) {
+    console.warn("plainRender tag requires 'out' parameter! Skipping!");
+    return;
+  }
+  let src = args.in;
+  if (src[0] === "~") {
+    src = src.replace(/^~(?=$|\/|\\)/, HOME_DIR);
+  }
+
+  let text = new TemplateEngine().renderFile(src, { ...args });
+  const engine = Runtime.fromText(
+    text,
+    meta.customTags,
+    meta.config,
+    meta.memoCache,
+  );
+  text = await engine.evaluateAll({ ...args });
+  text = new TemplateEngine().render(text, { ...args });
+
+  // Fix and replace stuff
+  text = text.replaceAll(/<partial src=".+?">/g, "");
+  text = text.replaceAll(/<\/partial>/g, "");
+  // External links should open in a new tab
+  text = text.replaceAll(
+    /(<a href="https?:.+?")>/g,
+    '$1 rel="noopener" target="_blank">',
+  );
+  const min = await minified(text);
+
+  console.log("Writing plain render:", args.out);
+  fs.writeFileSync(args.out, min, "utf-8");
+}
+
 export async function blog(
   _t: string,
   _a: Params,
@@ -307,8 +346,8 @@ export async function blog(
     `tmpl/${blog.layout}.html`,
     meta.customTags,
     meta.config,
+    meta.memoCache,
   );
-  engine.memoCache = meta.memoCache;
 
   ctx = { ...ctx, ...blog };
   const tmpl = await engine.evaluateAll(ctx);
@@ -343,8 +382,8 @@ export async function memo(
     "tmpl/wiki.html",
     meta.customTags,
     meta.config,
+    meta.memoCache,
   );
-  engine.memoCache = meta.memoCache;
   const ctx = meta.node.childCtx;
   ctx.layout = "wiki";
   ctx.id = id;
@@ -366,6 +405,9 @@ export async function memo(
     /(<a href="https?:.+?")>/g,
     '$1 rel="noopener" target="_blank">',
   );
+  // Fix and replace partials
+  html = html.replaceAll(/<partial src=".+?">/g, "");
+  html = html.replaceAll(/<\/partial>/g, "");
 
   fs.mkdirSync(`output/mem/${id}`, { recursive: true });
   const min = await minified(html);
