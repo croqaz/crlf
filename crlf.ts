@@ -15,12 +15,18 @@ import markedLinkifyIt from "marked-linkify-it";
 import Runtime from "./twofold/src/runtime.ts";
 import { TemplateEngine } from "./twofold/src/tmpl.ts";
 import { DiskCache } from "./twofold/src/cache.ts";
+import { getText } from "./twofold/src/tags.ts";
 
 type Params = Record<string, any>;
 
 const diskCache = new DiskCache("cache");
 const TTL = 1000 * 60 * 60 * 24; // 1 day
 const HOME_DIR = homedir();
+
+const CACHE_BLOGS = Object.values(
+  JSON.parse(fs.readFileSync("cache/blogs.json", "utf8")),
+);
+const MEM_TITLES = JSON.parse(fs.readFileSync("cache/mem_info.json", "utf8"));
 
 marked.use({ breaks: true, gfm: true }, markedLinkifyIt());
 
@@ -147,20 +153,17 @@ export function title(text: string, _a: Params, meta: Runtime): undefined {
     // console.warn("Title tag can only be used in MD files.");
     return;
   }
-
   const shortFn = path.basename(meta.file.fname!).toLowerCase().split(".")[0];
   console.log("Adding title text:", shortFn, "=", text);
-
-  const memInfo: Params = diskCache.getCache("mem_info", shortFn) || {};
-  memInfo.title = text;
+  const memInfo: Params = diskCache.getCache("mem_info", shortFn) || {
+    title: text,
+  };
   diskCache.setCache("mem_info", shortFn, memInfo, TTL);
-
-  meta.globalCtx.title = text;
   // HACK
-  // return "";
+  meta.globalCtx.title = text;
 }
 
-export function link(text: string, _a: Params, meta: Runtime): undefined {
+export function link(text: string, _a: Params, meta: Runtime): any {
   /*
    * 2✂︎f tag that defines links between memos in MEM.
    * The link doesn't return anything, just caches the relationship.
@@ -185,10 +188,6 @@ export function link(text: string, _a: Params, meta: Runtime): undefined {
   }
 
   const id = params.id.toLowerCase();
-  // Must be in title case
-  if (!params.text) params.text = id.toTitleCase();
-
-  // BROKEN because of lowercase
   const shortFn = path.basename(meta.file.fname!).toLowerCase().split(".")[0];
   console.log("Adding link:", shortFn, "->", id);
 
@@ -209,6 +208,10 @@ export function link(text: string, _a: Params, meta: Runtime): undefined {
   bckLinks.add(shortFn);
   diskCache.setCache("dir_links", shortFn, Array.from(dirLinks), TTL);
   diskCache.setCache("bck_links", id, Array.from(bckLinks), TTL);
+
+  if (MEM_TITLES[id]?.value?.title) {
+    return `[${MEM_TITLES[id].value.title}](./${id})`;
+  }
 }
 
 export function backlinks(_t: string, args: Params, meta: Runtime): string {
@@ -225,16 +228,11 @@ export function backlinks(_t: string, args: Params, meta: Runtime): string {
     let fname = meta.file.fname!.toLowerCase();
     fname = fname.split("/").pop() || fname;
     to = fname.split(".")[0]; // Remove extension
-    console.warn(
-      "No 'to' parameter provided for backlinks, using file name:",
-      to,
-    );
   }
   const bckLinks = (diskCache.getCache("bck_links", to) || [])
     .sort((a, b) => a.localeCompare(b))
     .map((id: string) => {
-      const linkText =
-        diskCache.getCache("mem_info", id)?.title || id.toTitleCase();
+      const linkText = MEM_TITLES[id]?.value?.title || id.toTitleCase();
       return `[${linkText}](./${id})`;
     });
   console.log("Backlinks for:", to, "=>", bckLinks);
@@ -365,14 +363,17 @@ export async function blog(
 }
 
 export async function memo(
-  text: string,
+  _t: string,
   _a: Params,
   meta: Runtime,
 ): Promise<undefined> {
   /**
    * 2✂︎f tag used to generate a single MEMO page.
    */
+  const nodes = meta.node.children!.filter((n) => n.name !== "title");
+  const text = getText({ children: nodes }).trim();
   if (!text) return;
+
   const id = path.basename(meta.file.fname!).toLowerCase().split(".")[0];
   // @ts-ignore It's grand!
   const ctx = meta.node.childCtx;
@@ -424,15 +425,18 @@ export async function photo(
       " ",
       "-",
     )}`.toLowerCase();
+  const url = `/log/photos/${key}/`;
 
-  // TODO :: load old values from cache if exists?
-  const blog: Params = {};
+  const blog: Params =
+    CACHE_BLOGS.map((e: any) => e.value)
+      .filter((e: Params) => e.topic === "photos" && e.url == url)
+      .at(0) || {};
   blog.date = args.date;
   blog.id = key;
   blog.layout = "post";
   blog.title = escapeText(args.title);
   blog.topic = "photos";
-  blog.url = `/log/photos/${key}/`;
+  blog.url = url;
   if (args.text) {
     blog.text = escapeText(args.text);
     if (!blog.text.endsWith(".")) {
@@ -462,9 +466,9 @@ export async function photo(
   const min = await _renderTemplate({ ...args, ...blog }, meta);
   if (!min) return;
 
-  fs.mkdirSync(`output/${blog.url}`, { recursive: true });
-  console.log("Writing photo:", blog.url, "Title:", blog.title);
-  fs.writeFileSync(`output/${blog.url}/index.html`, min, "utf-8");
+  fs.mkdirSync(`output/${url}`, { recursive: true });
+  console.log("Writing photo:", url, "Title:", blog.title);
+  fs.writeFileSync(`output/${url}/index.html`, min, "utf-8");
 }
 
 export async function img(
@@ -485,10 +489,7 @@ export async function img(
   }
 
   const pth = args["data-pth"].split("/").at(-1);
-  const info = Object.values(
-    JSON.parse(fs.readFileSync("cache/blogs.json", "utf8")),
-  )
-    .map((e: any) => e.value)
+  const info = CACHE_BLOGS.map((e: any) => e.value)
     .filter(
       (e: Params) =>
         e.topic === "photos" &&
@@ -512,13 +513,7 @@ export function tags(_t: string, _a: Params, _m: Runtime): string {
   /**
    * 2✂︎f tag used to generate the full list of tags.
    */
-  const blogs = Object.values(
-    JSON.parse(fs.readFileSync("cache/blogs.json", "utf8")),
-  )
-    .map((e: any) => e.value)
-    .sort((a: any, b: any) => (a.date < b.date ? 1 : -1));
-  console.log(`Loaded all blogs:`, blogs.length);
-
+  const blogs = CACHE_BLOGS.map((e: any) => e.value);
   const unsortedTags: Record<string, number> = {};
   let tags = "";
   blogs.forEach((p: Params) => {
@@ -547,7 +542,7 @@ export function tags(_t: string, _a: Params, _m: Runtime): string {
   )) {
     tags += `  <postList id=tag tag="${t}" count=${unsortedTags[t]}/>\n`;
   }
-  console.log("Generated tags list:", tags);
+  console.log(`Generated ${Object.keys(unsortedTags).length} tags list.`);
   return "\n  " + tags.trim() + "\n";
 }
 
@@ -559,35 +554,23 @@ export async function postList(
   /**
    * 2✂︎f tag used to generate a listing of blog posts.
    */
-  const engine = await Runtime.fromFile(
-    args.tmpl ? `tmpl/${args.tmpl}.html` : "tmpl/list.html",
-    meta.customTags,
-    meta.config,
-    meta.memoCache,
-  );
-
-  const ctx = structuredClone(args);
+  const ctx: Params = { id: args.id, blog: args.blog, theme: args.theme };
   ctx.layout = args.tmpl ? args.tmpl : "list";
+  ctx.title = args.title || args.id.toTitleCase();
+  ctx.tmpl = args.tmpl ? `tmpl/${args.tmpl}.html` : "tmpl/list.html";
   ctx.url = ("/" + (args.id === "index" ? "" : args.id) + "/").replaceAll(
     "//",
     "/",
   );
-  if (!args.title) {
-    ctx.title = args.id.toTitleCase();
-  }
   if (args.id === "articles" || args.id === "notes" || args.id === "photos") {
     ctx.ico = args.blog.topics[args.id];
   } else if (args.id === "tag") {
     ctx.title = `Tagged '${args.tag}'`;
     ctx.url = `/tags/${args.tag}/`;
   }
-
-  ctx.posts = Object.values(
-    JSON.parse(fs.readFileSync("cache/blogs.json", "utf8")),
-  )
-    .map((e: any) => e.value)
-    .sort((a: any, b: any) => (a.date < b.date ? 1 : -1));
-  console.log(`Total ${args.id} found:`, ctx.posts.length);
+  ctx.posts = CACHE_BLOGS.map((e: any) => e.value).sort((a: any, b: any) =>
+    a.date < b.date ? 1 : -1,
+  );
 
   if (args.id === "index") {
     ctx.posts = ctx.posts.slice(0, 6);
@@ -638,13 +621,9 @@ export async function postList(
     ctx.tags = sorted;
   }
 
-  const tmpl = await engine.evaluateAll(ctx);
-  let html = new TemplateEngine().render(tmpl, ctx);
-  // Fix and replace stuff
-  html = html.replaceAll(/<partial src=".+?">/g, "");
-  html = html.replaceAll(/<\/partial>/g, "");
-
-  const min = await minified(html);
+  const min = await _renderTemplate(ctx, meta);
+  if (!min) return;
+  console.log("Writing listing:", ctx.url, "with", ctx.posts.length, "entries");
   fs.mkdirSync(`output/${ctx.url}/`, { recursive: true });
   fs.writeFileSync(`output/${ctx.url}/index.html`, min, "utf-8");
 }
@@ -667,15 +646,11 @@ export async function feedXml(
   const blog: Record<string, any> = Bun.TOML.parse(
     fs.readFileSync("data/blog.toml", "utf-8"),
   );
-  const recent = Object.values(
-    JSON.parse(fs.readFileSync("cache/blogs.json", "utf8")),
-  )
-    .map((e: any) => {
-      e.value.absoluteUrl = `${blog.url}${e.value.url}`;
-      return e.value;
-    })
-    .sort((a: any, b: any) => (a.date < b.date ? 1 : -1));
-  const ctx = { blog, recent: recent.slice(0, 8) };
+  const blogs = CACHE_BLOGS.map((e: any) => {
+    e.value.absoluteUrl = `${blog.url}${e.value.url}`;
+    return e.value;
+  }).sort((a: any, b: any) => (a.date < b.date ? 1 : -1));
+  const ctx = { blog, recent: blogs.slice(0, 8) };
 
   const tmpl = await engine.evaluateAll(ctx);
   const xml = new TemplateEngine().render(tmpl, ctx);
@@ -700,14 +675,10 @@ export async function siteXml(
   const blog: Record<string, any> = Bun.TOML.parse(
     fs.readFileSync("data/blog.toml", "utf-8"),
   );
-  const pages = Object.values(
-    JSON.parse(fs.readFileSync("cache/blogs.json", "utf8")),
-  )
-    .map((e: any) => {
-      e.value.absoluteUrl = `${blog.url}${e.value.url}`;
-      return e.value;
-    })
-    .sort((a: any, b: any) => (a.date < b.date ? 1 : -1));
+  const pages = CACHE_BLOGS.map((e: any) => {
+    e.value.absoluteUrl = `${blog.url}${e.value.url}`;
+    return e.value;
+  }).sort((a: any, b: any) => (a.date < b.date ? 1 : -1));
   const date = new Date().toISOString().split("T")[0];
   pages.push({ date, absoluteUrl: `${blog.url}/articles/` });
   pages.push({ date, absoluteUrl: `${blog.url}/notes/` });
