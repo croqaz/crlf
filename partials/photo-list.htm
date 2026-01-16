@@ -1,0 +1,14 @@
+<main id="main" class="ml-auto mr-auto" style="width:{{ theme.photo_width }}">
+<h3 class="text-2xl mt-3 mb-4">{{ title }} <span class="ico ico-{{ ico }}"></span></h3>
+<style>
+  #images { flex-flow:row wrap;place-items:baseline; }
+  img { filter:grayscale(90%);transition:all .6s}img:hover{filter:grayscale(0) }
+</style>
+<ul id="images" class="list-none flex items-end gap-2 text-abisso md:text-base">
+  {% for img in posts %}
+  <li class="pb-2 leading-tight hover:text-acqua" style="max-width:120px">
+    <a href="{{ img.url }}"><img class="rounded" data-ahash="{{ img['data-ahash'] }}" data-dhash="{{ img['data-dhash'] }}" data-vhash="{{ img['data-vhash'] }}" data-date="{{ img.isoDate }}" data-title="{{ img.title }}" data-text="{{ img.text }}" src="{{ img.src }}"><span class="text-xs">{{ img.title }}</span></a>
+  </li>
+  {% endfor %}
+</ul>
+</main>

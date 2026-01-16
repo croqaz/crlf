@@ -24,25 +24,31 @@ const HOME_DIR = homedir();
 
 marked.use({ breaks: true, gfm: true }, markedLinkifyIt());
 
-function toTitleCase(s: string) {
-  return s.replace(
+// Extend the TypeScript global interfaces
+declare global {
+  interface String {
+    toTitleCase(): string;
+  }
+  interface Date {
+    format(fmtText: string): string;
+  }
+}
+//
+// Extend the runtime String prototype
+String.prototype.toTitleCase = function titleCase(): string {
+  return this.replace(
     /\w\S*/g,
     (text) => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase(),
   );
-}
-
-function formatDate(dateObj, fmtText) {
-  // Ensure dateObj is a Date object
-  if (!(dateObj instanceof Date)) {
-    return;
-  }
-
-  const utcDate = new Date(dateObj.toUTCString());
+};
+//
+// Extend the runtime Date prototype
+Date.prototype.format = function formatDate(fmtText: string): string {
+  const utcDate = new Date(this.toUTCString());
   const year = utcDate.getUTCFullYear();
   const month = utcDate.getUTCMonth();
   const day = utcDate.getUTCDate();
   const weekday = utcDate.getUTCDay();
-
   const monthsShort = [
     "Jan",
     "Feb",
@@ -60,7 +66,8 @@ function formatDate(dateObj, fmtText) {
   const daysShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   // Helper to pad numbers
-  const pad = (num, size) => String(num).padStart(size, "0");
+  const pad = (num: number, size: number): string =>
+    String(num).padStart(size, "0");
 
   // Format mapping
   const formatMap = {
@@ -81,7 +88,7 @@ function formatDate(dateObj, fmtText) {
   }
 
   return result;
-}
+};
 
 export function markdown(_t: string, args: Params): string {
   /*
@@ -179,7 +186,7 @@ export function link(text: string, _a: Params, meta: Runtime): undefined {
 
   const id = params.id.toLowerCase();
   // Must be in title case
-  if (!params.text) params.text = toTitleCase(id);
+  if (!params.text) params.text = id.toTitleCase();
 
   // BROKEN because of lowercase
   const shortFn = path.basename(meta.file.fname!).toLowerCase().split(".")[0];
@@ -227,7 +234,7 @@ export function backlinks(_t: string, args: Params, meta: Runtime): string {
     .sort((a, b) => a.localeCompare(b))
     .map((id: string) => {
       const linkText =
-        diskCache.getCache("mem_info", id)?.title || toTitleCase(id);
+        diskCache.getCache("mem_info", id)?.title || id.toTitleCase();
       return `[${linkText}](./${id})`;
     });
   console.log("Backlinks for:", to, "=>", bckLinks);
@@ -258,28 +265,20 @@ function escapeText(text: string): string {
     .replace(/'/g, "&#39;");
 }
 
-export async function plainRender(
-  _t: string,
+async function _renderTemplate(
   args: Params,
   meta: Runtime,
-): Promise<undefined> {
-  /**
-   * 2✂︎f tag used to render a plain HTML page.
-   */
-  if (!args.in) {
-    console.warn("plainRender tag requires 'in' parameter! Skipping!");
+): Promise<string | undefined> {
+  let src = args.in || args.tmpl;
+  if (!src) {
+    console.warn("args 'in' or 'tmpl' parameter is required! Skipping!");
     return;
   }
-  if (!args.out) {
-    console.warn("plainRender tag requires 'out' parameter! Skipping!");
-    return;
-  }
-  let src = args.in;
   if (src[0] === "~") {
     src = src.replace(/^~(?=$|\/|\\)/, HOME_DIR);
   }
 
-  let text = new TemplateEngine().renderFile(src, { ...args });
+  let text = new TemplateEngine().renderFile(src, args);
   const engine = Runtime.fromText(
     text,
     meta.customTags,
@@ -287,7 +286,7 @@ export async function plainRender(
     meta.memoCache,
   );
   text = await engine.evaluateAll({ ...args });
-  text = new TemplateEngine().render(text, { ...args });
+  text = new TemplateEngine().render(text, args);
 
   // Fix and replace stuff
   text = text.replaceAll(/<partial src=".+?">/g, "");
@@ -297,8 +296,25 @@ export async function plainRender(
     /(<a href="https?:.+?")>/g,
     '$1 rel="noopener" target="_blank">',
   );
-  const min = await minified(text);
 
+  const min = await minified(text);
+  return min;
+}
+
+export async function plainRender(
+  _t: string,
+  args: Params,
+  meta: Runtime,
+): Promise<undefined> {
+  /**
+   * 2✂︎f tag used to render a plain HTML page.
+   */
+  if (!args.out) {
+    console.warn("args 'out' parameter is required! Skipping!");
+    return;
+  }
+  const min = await _renderTemplate(args, meta);
+  if (!min) return;
   console.log("Writing plain render:", args.out);
   fs.writeFileSync(args.out, min, "utf-8");
 }
@@ -314,57 +330,37 @@ export async function blog(
     .map((n) => n.rawText)
     .join("")
     .trim();
+  if (!text) return;
 
   // @ts-ignore It's grand!
   let ctx = meta.node.childCtx;
+  if (!ctx.date || !ctx.title) return;
   const key = `${ctx.date.slice(2).replaceAll("-", "")}-${ctx.link || "1"}`;
-  const id = path.basename(meta.file.fname!).toLowerCase().split(".")[0];
 
   const blog: Params = {};
-  blog.id = id;
-  blog.layout = "post";
-  blog.url = `/log/entries/${key}/`;
   blog.date = ctx.date;
-  blog.title = ctx.title;
+  blog.id = path.basename(meta.file.fname!).toLowerCase().split(".")[0];
+  blog.layout = "post";
   blog.tags = ctx.tags || [];
-  blog.draft = ctx.draft || false;
+  blog.title = ctx.title;
   blog.topic = isArticle({ ...ctx, text }) ? "articles" : "notes";
-  blog.topicTitle = toTitleCase(blog.topic);
+  blog.url = `/log/entries/${key}/`;
   if (ctx.draft) blog.draft = true;
   blog.isoDate = new Date(ctx.date)
     .toISOString()
     .replace("T", " ")
     .replace(/\.000Z$/, "");
   blog.readingTime = getReadingTime(text);
-  blog.dtListed = formatDate(new Date(blog.date), "yyyy LLL dd");
-  blog.dtPublished = formatDate(new Date(blog.date), "yyyy LLL dd, ccc");
   // Cache into BLOGS!
   diskCache.setCache("blogs", key, blog, TTL);
 
-  const engine = await Runtime.fromFile(
-    // Blog post layout
-    `tmpl/${blog.layout}.html`,
-    meta.customTags,
-    meta.config,
-    meta.memoCache,
-  );
-
-  ctx = { ...ctx, ...blog };
-  const tmpl = await engine.evaluateAll(ctx);
-  const content = marked.parse(text);
-  let html = new TemplateEngine().render(tmpl, { ...ctx, content });
-  // Fix and replace stuff
-  html = html.replaceAll(/<partial src=".+?">/g, "");
-  html = html.replaceAll(/<\/partial>/g, "");
-  // External links should open in a new tab
-  html = html.replaceAll(
-    /(<a href="https?:.+?")>/g,
-    '$1 rel="noopener" target="_blank">',
-  );
+  ctx.tmpl = `tmpl/${blog.layout}.html`;
+  ctx.content = marked.parse(text);
+  const min = await _renderTemplate({ ...ctx, ...blog }, meta);
+  if (!min) return;
 
   fs.mkdirSync(`output/${blog.url}`, { recursive: true });
   console.log("Writing blog:", blog.url, "Title:", blog.title);
-  const min = await minified(html);
   fs.writeFileSync(`output/${blog.url}/index.html`, min, "utf-8");
 }
 
@@ -376,22 +372,18 @@ export async function memo(
   /**
    * 2✂︎f tag used to generate a single MEMO page.
    */
+  if (!text) return;
   const id = path.basename(meta.file.fname!).toLowerCase().split(".")[0];
-
-  const engine = await Runtime.fromFile(
-    "tmpl/wiki.html",
-    meta.customTags,
-    meta.config,
-    meta.memoCache,
-  );
+  // @ts-ignore It's grand!
   const ctx = meta.node.childCtx;
+  ctx.content = marked.parse(text);
+  ctx.title = ctx.title || id.toTitleCase();
+  ctx.tmpl = "tmpl/wiki.html";
   ctx.layout = "wiki";
   ctx.id = id;
 
-  const tmpl = await engine.evaluateAll(ctx);
-  const content = marked.parse(text);
-  let html = new TemplateEngine().render(tmpl, { ...ctx, content });
-
+  let html = await _renderTemplate(ctx, meta);
+  if (!html) return;
   // Fix and replace stuff
   html = html.replace(/<p>(.+?)<br>In:/, "In:");
   // Relative links should point to MEM
@@ -400,22 +392,13 @@ export async function memo(
     /<img src="\.\/img\/(.+?)"/g,
     '<img src="/mem/img/$1"',
   );
-  // External links should open in a new tab
-  html = html.replaceAll(
-    /(<a href="https?:.+?")>/g,
-    '$1 rel="noopener" target="_blank">',
-  );
-  // Fix and replace partials
-  html = html.replaceAll(/<partial src=".+?">/g, "");
-  html = html.replaceAll(/<\/partial>/g, "");
 
   fs.mkdirSync(`output/mem/${id}`, { recursive: true });
-  const min = await minified(html);
   if (id === "index") {
     console.log("Writing index memo page.");
-    fs.writeFileSync(`output/mem/index.html`, min, "utf-8");
+    fs.writeFileSync(`output/mem/index.html`, html, "utf-8");
   } else {
-    fs.writeFileSync(`output/mem/${id}/index.html`, min, "utf-8");
+    fs.writeFileSync(`output/mem/${id}/index.html`, html, "utf-8");
   }
 }
 
@@ -444,40 +427,30 @@ export async function photo(
 
   // TODO :: load old values from cache if exists?
   const blog: Params = {};
+  blog.date = args.date;
   blog.id = key;
   blog.layout = "post";
-  blog.url = `/log/photos/${key}/`;
-  blog.topic = "photos";
-  blog.date = args.date;
   blog.title = escapeText(args.title);
+  blog.topic = "photos";
+  blog.url = `/log/photos/${key}/`;
   if (args.text) {
     blog.text = escapeText(args.text);
     if (!blog.text.endsWith(".")) {
       blog.text += ".";
     }
   }
-  blog.topicTitle = toTitleCase(blog.topic);
   blog.isoDate = new Date(args.date)
     .toISOString()
     .replace("T", " ")
     .replace(/\.000Z$/, "");
-  blog.dtListed = formatDate(new Date(blog.date), "yyyy LLL dd");
-  blog.dtPublished = formatDate(new Date(blog.date), "yyyy LLL dd, ccc");
   if (args.image) blog.image = args.image;
   if (args.images && Array.isArray(args.images)) blog.images = args.images;
   // Cache into BLOGS!
   diskCache.setCache("blogs", key, blog, TTL);
 
-  const engine = await Runtime.fromFile(
-    // Blog post layout
-    `tmpl/${blog.layout}.html`,
-    meta.customTags,
-    meta.config,
-    meta.memoCache,
-  );
-
-  let content = blog.text ? `\n<p>${blog.text}</p>\n` : "";
-  content += args.images
+  args.tmpl = `tmpl/${blog.layout}.html`;
+  args.content = blog.text ? `\n<p>${blog.text}</p>\n` : "";
+  args.content += args.images
     ? args.images
         .map(
           (img: string) =>
@@ -486,13 +459,11 @@ export async function photo(
         .join("\n")
     : `<p><img src="/log/img/photos/${args.image}" alt="${blog.text}" title="${blog.title}"></p>`;
 
-  const ctx = { ...args, ...blog, content };
-  const tmpl = await engine.evaluateAll(ctx);
+  const min = await _renderTemplate({ ...args, ...blog }, meta);
+  if (!min) return;
 
-  const html = new TemplateEngine().render(tmpl, ctx);
-  const min = await minified(html);
-  console.log("Writing photo:", blog.url);
   fs.mkdirSync(`output/${blog.url}`, { recursive: true });
+  console.log("Writing photo:", blog.url, "Title:", blog.title);
   fs.writeFileSync(`output/${blog.url}/index.html`, min, "utf-8");
 }
 
@@ -530,7 +501,6 @@ export async function img(
   if (args["data-top-colors"]) {
     info["data-top-colors"] = args["data-top-colors"];
   }
-  console.log("Caching img-DB:", info);
   info.src = args.src;
   // Cache into BLOGS!
   diskCache.setCache("blogs", info.id, info, TTL);
@@ -603,12 +573,12 @@ export async function postList(
     "/",
   );
   if (!args.title) {
-    ctx.title = toTitleCase(args.id);
+    ctx.title = args.id.toTitleCase();
   }
   if (args.id === "articles" || args.id === "notes" || args.id === "photos") {
     ctx.ico = args.blog.topics[args.id];
   } else if (args.id === "tag") {
-    ctx.title = `Tagged "${args.tag}"`;
+    ctx.title = `Tagged '${args.tag}'`;
     ctx.url = `/tags/${args.tag}/`;
   }
 

@@ -1,88 +1,8 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <partial src="partials/meta.htm"></partial>
-    <link rel="preload" as="font" href="/fonts/Inter/Inter-upright-var.woff2" type="font/woff2" crossorigin="anonymous">
-    <style>
-    @font-face {
-      font-family: 'Inter var';
-      font-weight: 100 900;
-      font-display: swap;
-      font-style: normal;
-      font-named-instance: 'Regular';
-      src: url("/fonts/Inter/Inter-upright-var.woff2") format("woff2");
-      font-display: swap;
-    }
-    @font-face {
-      font-family: 'Inter var';
-      font-weight: 100 900;
-      font-display: swap;
-      font-style: italic;
-      font-named-instance: 'Italic';
-      src: url("/fonts/Inter/Inter-italic-var.woff2") format("woff2");
-      font-display: swap;
-    }
-    @font-face {
-      font-family: 'Triunfo';
-      font-style: normal;
-      font-weight: 400;
-      src: url("/fonts/Triunfo/Triunfo-Regular-Cond.otf") format("opentype");
-      font-display: swap;
-    }
-    #article img {
-      display: inline-block;
-      max-width: 128px !important;
-    }
-    code {
-      padding: 0;
-      display: inline-block;
-    }
-    #modalWrap {
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 99.9%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.1);
-      opacity: 0;
-      transform: scale(0.9, 0.9);
-      transition: all 0.44s ease-in-out;
-      z-index: -1;
-    }
-    #modalWrap.open {
-      background-color: rgba(0,0,0,0.9);
-      opacity: 1;
-      transform: scale(.95, .95);
-      z-index: 999;
-    }
-    #modalImg {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      display: block;
-      max-height: 96% !important;
-      max-width: 90%;
-    }
-    #modalClose {
-      position: absolute;
-      top: 10px;
-      right: 35px;
-      color: #f1f1f1;
-      font-size: 40px;
-      font-weight: bold;
-      transition: 0.3s;
-    }
-    #modalClose:hover, #modalClose:focus {
-      color: #bbb;
-      text-decoration: none;
-      cursor: pointer;
-    }
-    </style>
-    <link href="/css/styles.css" rel="stylesheet">
+    <partial src="partials/style.htm"></partial>
   </head>
   <body class="flex flex-col {{ theme.body_bg }}">
     <partial src="partials/header.htm"></partial>
@@ -91,6 +11,7 @@
       {{ content }}
       </article>
     </section>
+
     {% if id !== 'index' %}
     <div id="modalWrap">
       <span id="modalClose">&times;</span>
@@ -154,6 +75,7 @@
     });
     </script>
     {% endif %}
+
     <partial src="partials/footer.htm"></partial>
     <noscript><img src="{{ blog.analytics_url }}/pixel.gif"></noscript>
     <script src="{{ blog.analytics_url }}/script.js" defer></script>

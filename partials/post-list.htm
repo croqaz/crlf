@@ -3,16 +3,12 @@
 <div class="flex my-2">
   <ul class="posts-list flex-grow {{ theme.posts_list_color }} text-sm md:text-base">
   {% for post in posts %}
-  {% if post.draft %}
-  <!-- ignore -->
-  {% else %}
   <li class="post-item py-2 {{ theme.posts_list_hover }} ">
     <a href="{{ post.url }}" class="flex justify-between">
       {{ post.title }}
-      <time class="post-day" datetime="{{ post.isoDate }}">{{ post.dtListed }}</time>
+      <time class="post-day" datetime="{{ post.isoDate }}">{{ new Date(post.date).format("yyyy LLL dd") }}</time>
     </a>
   </li>
-  {% endif %}
   {% endfor %}
   </ul>
 </div>

@@ -11,9 +11,9 @@
 <nav role="navigation" class="flex shadow-md items-center {{ theme.nav_bg }} p-1 md:p-2">
   <div class="w-full flex flex-grow items-center text-sm md:text-base w-auto">
     <div class="flex-grow leading-none {{ theme.nav_link_color }}">
-    {% if topicTitle %}
+    {% if topic %}
       <a href="/{{ topic }}/" class="inline-block rounded capitalize px-4 py-2 {{ theme.nav_link_hover }}">
-        {{ topicTitle }}
+        {{ topic.toTitleCase() }}
       </a>
     {% elif layout === 'wiki' %}
       <a href="/mem/" class="inline-block rounded px-4 py-2 {{ theme.nav_link_hover }}">

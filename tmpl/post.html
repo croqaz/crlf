@@ -1,15 +1,12 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <partial src="partials/meta.htm"></partial>
     <partial src="partials/style.htm"></partial>
   </head>
   <body class="flex flex-col {{ theme.body_bg }}">
     <partial src="partials/header.htm"></partial>
     <section class="flex mt-4 mb-6 px-6" style="flex:1 0 auto">
-
     <article id="article" class="ml-auto mr-auto h-entry {{ topic }}"
       style="{% if topic === 'photos' %}max-width:{{ theme.photo_width }}{% else %}width:{{ theme.main_width }}{% endif %}">
 
@@ -24,7 +21,7 @@
         <span title="Created at">
           <span class="ico ico-calendar"></span>
           <time class="dt-published" datetime="{{ isoDate }}">
-            {{ dtPublished }}</time>
+            {{ new Date(date).format("yyyy LLL dd, ccc") }}</time>
         </span>
         {% if source %}
           <span class="text-right mr-1" title="First posted on/ Original source">

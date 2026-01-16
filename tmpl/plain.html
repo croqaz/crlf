@@ -7,11 +7,9 @@
   <body class="flex flex-col {{ theme.body_bg }}">
     <partial src="partials/header.htm"></partial>
     <section class="flex mt-4 mb-6 px-6" style="flex:1 0 auto">
-      {% if id === "photos" %}
-      <partial src="partials/photo-list.htm"></partial>
-      {% else %}
-      <partial src="partials/post-list.htm"></partial>
-      {% endif %}
+      <article id="article" class="ml-auto mr-auto" style="width:64ch">
+        <markdown src="{{ markdown }}"/>
+      </article>
     </section>
     <partial src="partials/footer.htm"></partial>
     <noscript><img src="{{ blog.analytics_url }}/pixel.gif"></noscript>

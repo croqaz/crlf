@@ -1,5 +1,11 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{ title }} - {{ blog.name }}</title>
 <meta name="google-site-verification" content="Qtb666uzTeXTjf9Kxstu3zoTNNE0CGkLhK2Ra-oYPtc" />
+
+{% if draft || noindex %}
+<meta name="robots" content="noindex,nofollow">
+{% endif %}
 
 {% if blog.author %}
 <meta name="author" content="{{ blog.author.name }}">

@@ -25,5 +25,57 @@
   src: url("/fonts/Triunfo/Triunfo-Regular-Cond.otf") format("opentype");
   font-display: swap;
 }
+{% if layout === 'wiki' %}
+#article img {
+  display: inline-block;
+  max-width: 128px !important;
+}
+code {
+  padding: 0;
+  display: inline-block;
+}
+#modalWrap {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 99.9%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.1);
+  opacity: 0;
+  transform: scale(0.9, 0.9);
+  transition: all 0.44s ease-in-out;
+  z-index: -1;
+}
+#modalWrap.open {
+  background-color: rgba(0,0,0,0.9);
+  opacity: 1;
+  transform: scale(.95, .95);
+  z-index: 999;
+}
+#modalImg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: block;
+  max-height: 96% !important;
+  max-width: 90%;
+}
+#modalClose {
+  position: absolute;
+  top: 10px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+#modalClose:hover, #modalClose:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+{% endif %}
 </style>
 <link href="/css/styles.css" rel="stylesheet">
