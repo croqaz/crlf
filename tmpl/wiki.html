@@ -48,10 +48,12 @@
         document.body.onkeydown = function (ev) {
           if (ev.key === 'Escape') closeModal();
           else if (ev.key === 'ArrowRight' || ev.key === 'ArrowLeft') {
-            let next = null;
             const img = document.getElementById(modalImg.getAttribute('data-id'));
-            if (ev.key === 'ArrowRight') next = img.nextElementSibling;
-            else next = img.previousElementSibling;
+            let next = img;
+            const dir = ev.key === 'ArrowRight' ? 'nextElementSibling' : 'previousElementSibling';
+            while ((next = next[dir])) {
+              if (next.tagName === 'IMG') break;
+            }
             if (!next) return;
             modalImg.src = next.currentSrc;
             next.setAttribute('id', calcID(next));
