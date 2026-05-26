@@ -25,14 +25,16 @@
   src: url("/fonts/Triunfo/Triunfo-Regular-Cond.otf") format("opentype");
   font-display: swap;
 }
+code {
+  padding: 0;
+  display: inline-block;
+  white-space: pre-wrap !important;
+  word-wrap: break-word !important;
+}
 {% if layout === 'wiki' %}
 #article img {
   display: inline-block;
   max-width: 128px !important;
-}
-code {
-  padding: 0;
-  display: inline-block;
 }
 #modalWrap {
   position: fixed;

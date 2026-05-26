@@ -343,7 +343,10 @@ export async function blog(
   blog.title = ctx.title;
   blog.topic = isArticle({ ...ctx, text }) ? "articles" : "notes";
   blog.url = `/log/entries/${key}/`;
-  if (ctx.draft) blog.draft = true;
+  if (ctx.draft) {
+    console.log("Blog is a draft:", blog.url);
+    blog.draft = true;
+  }
   blog.isoDate = new Date(ctx.date)
     .toISOString()
     .replace("T", " ")
@@ -573,7 +576,12 @@ export async function postList(
   );
 
   if (args.id === "index") {
-    ctx.posts = ctx.posts.slice(0, 6);
+    ctx.posts = ctx.posts
+      .filter(
+        (p: Params) =>
+          !p.draft && (p.topic === "articles" || p.topic === "notes"),
+      )
+      .slice(0, 6);
   } else if (
     args.id === "articles" ||
     args.id === "notes" ||
