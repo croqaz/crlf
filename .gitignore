@@ -94,17 +94,14 @@ typings/
 
 ### project ###
 
-# 11ty build
-website/
+blog
+cache/
 css/
-
-# images
-log/img/
-
-# logs
+data/*mentions.json
 log/*/*.md
+log/img/
+mem
 mem/*.md
-
-# cached mentions
-_data/_webmentions.json
-
+output/
+tfold
+twofold

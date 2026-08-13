@@ -1,0 +1,35 @@
+
+name = "Cr;Lf;"
+title = "&amp;Cr; &amp;Lf;"
+description = "A personal blog and wiki, by Cristi Constantin"
+
+url = "https://crlf.link"
+comments_url = "https://comment.crlf.link"
+analytics_url = "https://stat.crlf.link"
+
+[topics]
+notes = sticky-note
+articles = file
+photos = camera
+
+[copyright]
+from = "2007-2026"
+name = "Cristi Constantin"
+
+[license]
+name = "CC BY NC SA 4.0"
+link = "http://creativecommons.org/licenses/by-nc-sa/4.0/"
+title = "Attribution-NonCommercial-ShareAlike 4.0 International License"
+
+[author]
+name = "Cristi Constantin"
+url = "https://crlf.link/author/"
+
+  [author.social]
+  "github.com/croqaz" = "https://github.com/croqaz"
+  "gitlab.com/croqaz" = "https://gitlab.com/croqaz"
+
+[feed]
+filename = "feed.xml"
+path = "/feed.xml"
+url = "https://crlf.link/feed.xml"

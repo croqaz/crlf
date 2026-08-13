@@ -27,6 +27,9 @@ Now use the caches blogs to generate the lists:
 
 # Photos
 
+This requires:
+tfold -f crlf.ts org/img-photos-db.htm
+
 <postList id=photos></postList>
 
 # § Tags
@@ -81,6 +84,8 @@ We have a listing page + a page for every single tag.
   <postList id=tag tag="game" count=3/>
   <postList id=tag tag="emacs" count=3/>
   <postList id=tag tag="editor" count=3/>
+  <postList id=tag tag="ai" count=3/>
+  <postList id=tag tag="vintage" count=3/>
   <postList id=tag tag="journal" count=2/>
   <postList id=tag tag="creativity" count=2/>
   <postList id=tag tag="ro" count=2/>
@@ -102,8 +107,6 @@ We have a listing page + a page for every single tag.
   <postList id=tag tag="archive" count=2/>
   <postList id=tag tag="memex" count=2/>
   <postList id=tag tag="mushrooms" count=2/>
-  <postList id=tag tag="ai" count=2/>
-  <postList id=tag tag="vintage" count=2/>
   <postList id=tag tag="horror" count=1/>
   <postList id=tag tag="stories" count=1/>
   <postList id=tag tag="ideas" count=1/>

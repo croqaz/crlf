@@ -314,7 +314,8 @@ export async function plainRender(
   const min = await _renderTemplate(args, meta);
   if (!min) return;
   console.log("Writing plain render:", args.out);
-  fs.writeFileSync(args.out, min, "utf-8");
+  fs.mkdirSync(`output/${path.dirname(args.out)}`, { recursive: true });
+  fs.writeFileSync(`output/${args.out}`, min, "utf-8");
 }
 
 export async function blog(
@@ -423,17 +424,17 @@ export async function photo(
     return;
   }
 
-  const key =
-    `${args.date.slice(2).replaceAll("-", "")}-${args.title.replaceAll(
+  const key = `${args.date.slice(2).replaceAll("-", "")}-${
+    args.title.replaceAll(
       " ",
       "-",
-    )}`.toLowerCase();
+    )
+  }`.toLowerCase();
   const url = `/log/photos/${key}/`;
 
-  const blog: Params =
-    CACHE_BLOGS.map((e: any) => e.value)
-      .filter((e: Params) => e.topic === "photos" && e.url == url)
-      .at(0) || {};
+  const blog: Params = CACHE_BLOGS.map((e: any) => e.value)
+    .filter((e: Params) => e.topic === "photos" && e.url == url)
+    .at(0) || {};
   blog.date = args.date;
   blog.id = key;
   blog.layout = "post";
@@ -459,11 +460,11 @@ export async function photo(
   args.content = blog.text ? `\n<p>${blog.text}</p>\n` : "";
   args.content += args.images
     ? args.images
-        .map(
-          (img: string) =>
-            `<p><img src="/log/img/photos/${img}" alt="${args.text}" title="${args.title}"></p>`,
-        )
-        .join("\n")
+      .map(
+        (img: string) =>
+          `<p><img src="/log/img/photos/${img}" alt="${args.text}" title="${args.title}"></p>`,
+      )
+      .join("\n")
     : `<p><img src="/log/img/photos/${args.image}" alt="${blog.text}" title="${blog.title}"></p>`;
 
   const min = await _renderTemplate({ ...args, ...blog }, meta);
@@ -540,9 +541,11 @@ export function tags(_t: string, _a: Params, _m: Runtime): string {
       }
     }
   });
-  for (const t of Object.keys(unsortedTags).sort(
-    (a, b) => unsortedTags[b] - unsortedTags[a],
-  )) {
+  for (
+    const t of Object.keys(unsortedTags).sort(
+      (a, b) => unsortedTags[b] - unsortedTags[a],
+    )
+  ) {
     tags += `  <postList id=tag tag="${t}" count=${unsortedTags[t]}/>\n`;
   }
   console.log(`Generated ${Object.keys(unsortedTags).length} tags list.`);
@@ -572,7 +575,7 @@ export async function postList(
     ctx.url = `/tags/${args.tag}/`;
   }
   ctx.posts = CACHE_BLOGS.map((e: any) => e.value).sort((a: any, b: any) =>
-    a.date < b.date ? 1 : -1,
+    a.date < b.date ? 1 : -1
   );
 
   if (args.id === "index") {
@@ -621,9 +624,11 @@ export async function postList(
         }
       }
     });
-    for (const t of Object.keys(unsortedTags).sort(
-      (a, b) => unsortedTags[b] - unsortedTags[a],
-    )) {
+    for (
+      const t of Object.keys(unsortedTags).sort(
+        (a, b) => unsortedTags[b] - unsortedTags[a],
+      )
+    ) {
       sorted[t] = unsortedTags[t];
     }
     ctx.tags = sorted;
